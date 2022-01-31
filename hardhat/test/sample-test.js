@@ -57,7 +57,7 @@ describe("Greeter", function() {
     const bobBalanceAfter = await bob.getBalance();
     const museumBalanceAfter = await bob.provider.getBalance(treasury.address);
 
-    expect(bobBalanceAfter.sub(bobBalanceBefore)).to.be.closeTo(ethers.utils.parseEther("0.9"), ethers.utils.parseEther("0.0001"));
+    expect(bobBalanceAfter.sub(bobBalanceBefore)).to.be.closeTo(ethers.utils.parseEther("0.9"), ethers.utils.parseEther("0.001"));
     expect(museumBalanceBefore.sub(museumBalanceAfter)).to.be.closeTo(ethers.utils.parseEther("0.9"), ethers.utils.parseEther("0.0001"));
     // https://ethereum-waffle.readthedocs.io/en/latest/matchers.htmlh
   });
@@ -82,4 +82,26 @@ describe("Greeter", function() {
     expect(await museum.currentDebt(alice.address)).closeTo(expectedDebt, "1000");
   });
 
+  it("Should wrap/unwrap ETH and deposit on AAVE using caller funds", async function () {
+    const treasury_aWETHbefore = await treasury.WMATICbalanace()
+    await treasury.depositAAVE({ value: ethers.utils.parseEther("1") })
+    const treasury_aWETHafter = await treasury.WMATICbalanace()
+
+    expect(treasury_aWETHafter.sub(treasury_aWETHbefore)).to.be.closeTo(ethers.utils.parseEther("1"), ethers.utils.parseEther("0.001"));
+
+    await ethers.provider.send("evm_increaseTime", [60 * 60 * 24 * 365]);
+    await ethers.provider.send("evm_mine", []); // add 365 days
+
+    const treasury_aWETHafterOneYear = await treasury.WMATICbalanace()
+    expect(treasury_aWETHafterOneYear).to.be.above(treasury_aWETHafter.sub(treasury_aWETHbefore));
+
+    console.log(ethers.utils.formatEther(treasury_aWETHafterOneYear), "ETH")
+    
+    // Toca approve
+    //await treasury.withdrawAAVE({ value: ethers.utils.parseEther("1") })
+
+  })
+
 });
+
+//    npx hardhat node --fork https://speedy-nodes-nyc.moralis.io/aaf5f27c6c7a9ad182a69ccd/polygon/mumbai --fork-block-number 24401256  
