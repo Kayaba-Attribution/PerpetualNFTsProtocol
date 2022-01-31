@@ -1,3 +1,21 @@
+https://betterprogramming.pub/how-to-supply-assets-to-the-aave-protocol-programmatically-acfb0875a2f0
+
+
+LendingPoolAddressesProvider:
+"0x178113104fEcbcD7fF8669a0150721e231F0FD4B"
+https://mumbai.polygonscan.com/address/0x178113104fEcbcD7fF8669a0150721e231F0FD4B/transactions#readContract
+
+LendingPool = LendingPoolAddressesProvider.getLendingPool()
+
+LendingPool Docs: https://docs.aave.com/developers/v/2.0/the-core-protocol/lendingpool
+
+Deposit on LendingPool:
+function deposit(address asset, uint256 amount, address onBehalfOf, uint16 referralCode)
+
+Mumbai RPC
+
+https://speedy-nodes-nyc.moralis.io/aaf5f27c6c7a9ad182a69ccd/polygon/mumbai
+
 # NFT-With-Perpetual-Value
 
 ### Short Description:

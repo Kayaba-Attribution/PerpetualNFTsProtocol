@@ -7,8 +7,8 @@ Varios:
 - [ ] NFT Art MVP (10 imagenes)
 
 Core:
-- [ ] Crear NFT contrato que minte y reciba ether
-- [ ] Crear un "tesoro" que reciba el ether
+- [x] Crear NFT contrato que minte y reciba ether
+- [x] Crear un "tesoro" que reciba el ether
 - [ ] Burn NFT que devuelve 90% al owner
 
 Dificil:

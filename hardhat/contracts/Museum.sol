@@ -21,7 +21,12 @@ contract Museum is Ownable, IERC721Receiver {
   // Save User NFT _id
   mapping(uint256 => address) public collateralNFTOwner;
 
+  mapping(address => uint256) public borrowed;
+  mapping(address => uint256) public borrowedTime;
+
   event Deposit(address owner, uint256 tokenId);
+  event Borrow(address owner, uint256 amount);
+  event Repay(address owner, uint256 amount);
   constructor(address _nftToken, address payable _treasury) {
     nftToken = MyToken(_nftToken);
     treasury = Treasury(_treasury);
@@ -34,6 +39,37 @@ contract Museum is Ownable, IERC721Receiver {
     collateralNFTOwner[_id] = msg.sender;
     
     emit Deposit(msg.sender, _id);
+  }
+
+  // user cant borrow more than 50% of its collateral
+  function maxBorrow(address user) public view returns(uint256) {
+    return (collateralAmount[user] / 2) - borrowed[user] - currentDebt(msg.sender);
+  }
+
+  function currentDebt (address user) public view returns(uint256) {
+    //5% anual
+
+    uint256 deltaT = (block.timestamp - borrowedTime[user]);
+    // 5000 = 5% yearly
+    // 100000 = 100%
+
+    return (borrowed[user] * deltaT * 5000) / (365*24*60*60 * 100000);
+  }
+  
+
+  function borrow(uint256 amount) external {
+    // debt update
+    borrowed[msg.sender] += currentDebt(msg.sender);
+    // TODO: revisar por que se pirde que la obrta aumente su valor
+    borrowedTime[msg.sender] = block.timestamp;
+
+    require(amount <= maxBorrow(msg.sender), "You cant borrow more than");
+
+    borrowed[msg.sender] += amount;
+
+    treasury.sendMoney(msg.sender, amount);
+
+    emit Borrow(msg.sender, amount);
   }
 
   function withdraw(uint256 _id) external {
