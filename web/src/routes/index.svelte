@@ -40,18 +40,24 @@
 	{:else}
 		minteando, aguanta la mecha
 	{/if}
-
-	<ul> 
-		{#each $nfts as nft}
-			<li>
-				#{nft}
-				<button>depositar #{nft} en museo como colateral</button>
-			</li>
-		{/each}
-	</ul>
+	<div class="flex w-full">
+		<div class="flex w-full">
+			{#each $nfts as nft}
+				<div class="w-1/3 p-10">
+					<img src="/tokens/{nft}.jpeg" class="rounded" />
+					<button>depositar #{nft} en museo como colateral</button>
+				</div>
+			{/each}
+		</div>
+	</div>
 {:else}
-	<button on:click={loginMetamask}>boton de conectar</button>
+	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}
+
+
+
+		
+
 </section>
 
 <style>
