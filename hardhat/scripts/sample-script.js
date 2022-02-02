@@ -5,21 +5,41 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
+
+let treasury, myToken, museum;
+
+let deployer, bob, alice;
+
+const WETHGateway = "0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA";
+const LendingPoolAddressesProviderAddress = "0x178113104fEcbcD7fF8669a0150721e231F0FD4B";
+const aMATIC = "0xF45444171435d0aCB08a8af493837eF18e86EE27";
+
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile 
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  await hre.run("compile");
+  const [deployer] = await ethers.getSigners();
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const Treasury = await ethers.getContractFactory("Treasury");
+  treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
+  await treasury.deployed();
 
-  await greeter.deployed();
+  const MyToken = await ethers.getContractFactory("MyToken");
+  myToken = await MyToken.deploy(treasury.address);
+  await myToken.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  const Museum = await ethers.getContractFactory("Museum");
+  museum = await Museum.deploy(myToken.address, treasury.address);
+  await museum.deployed();
+
+  await treasury.transferOwnership(museum.address);
+
+  console.log({
+    museum: museum.address,
+    treasury: treasury.address,
+    myToken: myToken.address,
+  });
+
+
+  await deployer.sendTransaction({ to: "0x0600061016d090f004925000D80008e0fA1610c0", value: ethers.utils.parseEther("5.0") });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
