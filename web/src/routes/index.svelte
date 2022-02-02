@@ -4,17 +4,8 @@
 
 <script>
 	import { nfts, wallet, loginMetamask, init, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
-	import { onMount } from 'svelte';
 	import { parseEther } from '@ethersproject/units';
 	
-	onMount(() => {
-		try {
-			init();
-		} catch(err) {
-			/* empty */
-		}
-	});
-
 	let minteando = false;
 	async function mint() {
 		try {
@@ -39,7 +30,7 @@
 
 	{#if $wrongNetwork}
 		estas en al red equivocada
-		<button on:click={() => pickNetwork('0x7A69')}>CHANGE TO HARDHAT</button>
+		<button on:click={() => pickNetwork()}>CHANGE TO HARDHAT</button>
 	{/if}
 	<h2>
 		tienes {$balance} NFTs

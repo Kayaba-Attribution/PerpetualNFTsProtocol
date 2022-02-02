@@ -1,6 +1,17 @@
 <script>
   import Header from "$lib/header/Header.svelte";
   import "../app.css";
+
+  import { onMount } from 'svelte';
+	
+  onMount(() => {
+		try {
+			init();
+		} catch(err) {
+			/* empty */
+		}
+	});
+
 </script>
 
 <Header>
