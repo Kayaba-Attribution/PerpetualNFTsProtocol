@@ -41,3 +41,18 @@ No more speculative and static NFTs! Our Protocol creates dynamic NFTs used to g
 * incremetar los rewards dependiendo de la cantidad de past owners, generalmente entre menos duenos pasados mejor es el carro (seria algo asi con cuadros?)
 
 * Incrementar/redicir rewards basados en las propiedades del NFT (dificil de hacer pero interesante)
+
+
+### Liquidation
+
+
+100% => 1 ether
+50 % => .5 
+
+...
+...
+.6 ether => liquidian
+10% => 0.1 ether
+
+.7 ETH
+EN tesoro queda 0.3ETH y la obra
