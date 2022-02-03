@@ -36,7 +36,7 @@
 	<div class="grid px-4 lg:px-0 grid-cols-4 lg:grid-cols-12 gap-x-3 lg:gap-x-5">
 		<div class="flex col-span-full col-end-12 col-start-8 justify-end space-x-8">
 			{#if $wrongNetwork}
-				<button on:click={pickNetwork} class="flex items-center px-4 h-12 text-white font-bold bg-link bg-orange-600 rounded shadow-button space-x-3">Wrong Network</button>
+				<button on:click={pickNetwork} class="flex items-center px-4 h-12 text-white font-bold bg-link bg-orange-600 rounded shadow-button space-x-3 hover:bg-orange-700 cursor-pointer">Wrong Network</button>
 			{:else if $wallet}
 				<div class="w-[153px] relative">
 					<div class="absolute z-50 flex flex-col items-center shadow-button"><button class="flex items-center px-4 h-12 bg-white rounded"><div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-green-500 mr-3"></div><div>{$wallet.slice(0, 6)}...{$wallet.slice(-6)}</div><span class="ml-1 text-gray-700 text-sm">▼</span></button></div>

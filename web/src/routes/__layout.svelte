@@ -3,9 +3,11 @@
   import "../app.css";
 
   import { onMount } from 'svelte';
-	
+
+ 	import { init } from '$lib/eth.js';
+
   onMount(() => {
-		try {
+    try {
 			init();
 		} catch(err) {
 			/* empty */

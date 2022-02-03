@@ -16,13 +16,14 @@ export const contracts = {};
 export const wallet = writable();
 export const balance = writable(0);
 export const wrongNetwork = writable(true);
+export const tokenApproved = writable(false);
 
 export const nfts = writable([]);
 
 const ADDRESS = {
-  museum: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
-  treasury: '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
-  myToken: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
+  museum: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+  treasury: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  myToken: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
 }
 
 
@@ -55,19 +56,26 @@ export async function init() {
   wallet.set(_wallet);
   // signer.set(_signer);
 
-
-  contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
-  contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
-
   const _networkDetails = await provider.getNetwork();
   // networkDetails.set(_networkDetails);
-  
   if (_networkDetails.chainId !== CHAIN_ID) {
     wrongNetwork.set(true);
     return;
   } else {
     wrongNetwork.set(false);
   }
+
+  contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
+  contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
+
+  const _tokenApproved = await contracts.myToken.isApprovedForAll(_wallet, ADDRESS.museum);
+  tokenApproved.set(_tokenApproved);
+
+  contracts.myToken.on("ApprovalForAll", (owner, operator, approved) => {
+    if(owner === _wallet && operator === ADDRESS.museum) {
+      tokenApproved.set(approved);
+    }
+  });
 
   const _balance = await contracts.myToken.balanceOf(_wallet);
   balance.set(_balance);

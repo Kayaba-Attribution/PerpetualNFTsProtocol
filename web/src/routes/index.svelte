@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { nfts, wallet, loginMetamask, init, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
+	import { nfts, wallet, tokenApproved, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
 	
 	let minteando = false;
@@ -15,6 +15,36 @@
 		} catch (err) {}
 		minteando = false;
 	}
+
+	let wait = {};
+
+	async function addCollateral(nftId) {
+		try {
+			const tx = await contracts.museum.deposit(String(nftId));
+			wait[nftId] = true;
+			wait = {...wait};
+			await tx.wait();
+		} catch(err) {
+		}
+		wait[nftId] = false;
+		wait = {...wait};
+	}
+
+	async function approve() {
+		debugger;
+		try {
+			const tx = await contracts.myToken.setApprovalForAll(contracts.museum.address, true);
+			
+			wait.approve = true;
+			wait = {...wait};
+			await tx.wait();
+		} catch(err) {
+			console.log(err)
+		}
+		wait.approve = false;
+		wait = {...wait};
+	}
+
 </script>
 
 <svelte:head>
@@ -22,7 +52,6 @@
 </svelte:head>
 
 <section>
-	
 	<!-- create a screen -->
 	<p>{$wallet}</p>
 {#if $wallet}
@@ -43,9 +72,17 @@
 	<div class="flex w-full">
 		<div class="flex w-full">
 			{#each $nfts as nft}
-				<div class="w-1/3 p-10">
+				<div class="w-1/3 p-10 text-center">
 					<img src="/tokens/{nft}.jpeg" class="rounded" />
-					<button>depositar #{nft} en museo como colateral</button>
+					{#if !$tokenApproved}
+						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
+						class:cursor-wait={wait.approve}
+						on:click={()=> approve()}>Approve Museum</button>
+					{:else}
+						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
+						class:cursor-wait={wait[nft]}
+						on:click={()=> addCollateral(nft)}>add as colateral</button>
+					{/if}
 				</div>
 			{/each}
 		</div>
