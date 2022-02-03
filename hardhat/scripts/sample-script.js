@@ -1,3 +1,6 @@
+// npm install dotenv --save
+// require('dotenv').config()
+
 // We require the Hardhat Runtime Environment explicitly here. This is optional 
 // but useful for running the script in a standalone fashion through `node <script>`.
 //
@@ -38,8 +41,8 @@ async function main() {
     myToken: myToken.address,
   });
 
-
-  await deployer.sendTransaction({ to: "0xdF347c877D36325947C3Fde5801FA405809CA94D", value: ethers.utils.parseEther("5.0") });
+ // process.env.wallet
+  await deployer.sendTransaction({ to: "0x0600061016d090f004925000D80008e0fA1610c0", value: ethers.utils.parseEther("5.0") });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
