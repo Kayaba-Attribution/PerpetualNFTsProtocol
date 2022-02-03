@@ -13,7 +13,7 @@ let provider;
 
 export const contracts = {};
 
-export const wallet = writable();
+export const wallet = writable('');
 export const balance = writable(0);
 export const wrongNetwork = writable(true);
 export const tokenApproved = writable(false);
@@ -51,11 +51,6 @@ export async function init() {
     });
   }
 
-  const _signer = await provider.getSigner();
-  const _wallet = await _signer.getAddress();
-  wallet.set(_wallet);
-  // signer.set(_signer);
-
   const _networkDetails = await provider.getNetwork();
   // networkDetails.set(_networkDetails);
   if (_networkDetails.chainId !== CHAIN_ID) {
@@ -64,6 +59,18 @@ export async function init() {
   } else {
     wrongNetwork.set(false);
   }
+
+  let _signer, _wallet;
+  try {
+    _signer = await provider.getSigner();
+    _wallet = await _signer.getAddress();
+    wallet.set(_wallet);
+  } catch(err) {
+    console.error(err);
+    // probably not log in with metamask
+    return;
+  }
+  // signer.set(_signer);
 
   contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
   contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
@@ -94,11 +101,11 @@ export async function init() {
     if (to === _wallet) {
       const _nfts = await get(nfts);
       _nfts.push(value);
-      nfts.set(_nfts);     
+      nfts.set([..._nfts]);
       balance.set(await contracts.myToken.balanceOf(_wallet));
     } else if (from === _wallet) {
       const _nfts = await get(nfts);
-      nfts.set(_nfts.filter(tokenId => tokenId !== value));
+      nfts.set([..._nfts.filter(tokenId => Number(tokenId) !== Number(value))]);
       balance.set(await contracts.myToken.balanceOf(_wallet));
     }
   });

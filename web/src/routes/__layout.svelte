@@ -4,7 +4,7 @@
 
   import { onMount } from 'svelte';
 
- 	import { init } from '$lib/eth.js';
+ 	import { init, wallet } from '$lib/eth.js';
 
   onMount(() => {
     try {
@@ -18,7 +18,11 @@
 
 <Header>
   <main>
-    <slot />
+    {#if $wallet}
+      <slot />
+    {:else}
+      <h2 class="text-2xl font-bold">PLEASE CONNECT YOUR WALLET TO CONTINUE</h2>
+    {/if}
   </main>
 
   <footer>
@@ -58,4 +62,7 @@
     }
   </style>
 </Header>
+
+
+
 <slot />

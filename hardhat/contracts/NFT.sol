@@ -20,7 +20,7 @@ contract MyToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function nftValue() public pure returns(uint256) {
-        return 40 ether;
+        return 1 ether;
     }
 
     function mint() public payable {

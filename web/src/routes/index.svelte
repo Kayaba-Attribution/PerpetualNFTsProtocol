@@ -31,7 +31,6 @@
 	}
 
 	async function approve() {
-		debugger;
 		try {
 			const tx = await contracts.myToken.setApprovalForAll(contracts.museum.address, true);
 			

@@ -39,7 +39,13 @@
 				<button on:click={pickNetwork} class="flex items-center px-4 h-12 text-white font-bold bg-link bg-orange-600 rounded shadow-button space-x-3 hover:bg-orange-700 cursor-pointer">Wrong Network</button>
 			{:else if $wallet}
 				<div class="w-[153px] relative">
-					<div class="absolute z-50 flex flex-col items-center shadow-button"><button class="flex items-center px-4 h-12 bg-white rounded"><div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-green-500 mr-3"></div><div>{$wallet.slice(0, 6)}...{$wallet.slice(-6)}</div><span class="ml-1 text-gray-700 text-sm">▼</span></button></div>
+					<div class="absolute z-50 flex flex-col items-center shadow-button">
+						<button class="flex items-center px-4 h-12 bg-white rounded">
+							<div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-green-500 mr-3"></div>
+							<div>{$wallet.slice(0, 6)}...{$wallet.slice(-6)}</div>
+							<span class="ml-1 text-gray-700 text-sm">▼</span>
+						</button>
+					</div>
 				</div>
 			{:else}
 				<button on:click={loginMetamask} class="flex items-center px-4 h-12 bg-white rounded shadow-button space-x-3"><div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-red-500"></div><div>Connect Wallet</div></button>

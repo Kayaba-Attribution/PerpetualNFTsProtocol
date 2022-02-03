@@ -1,44 +1,65 @@
-<script context="module">
-	import { browser, dev } from '$app/env';
+<script>
 
-	// we don't need any JS on this page, though we'll load
-	// it in dev so that we get hot module replacement...
-	export const hydrate = dev;
+import { onMount } from 'svelte';
 
-	// ...but if the client-side router is already loaded
-	// (i.e. we came here from elsewhere in the app), use it
-	export const router = browser;
+import { contracts, init, wallet } from '$lib/eth.js';
 
-	// since there's no dynamic data here, we can prerender
-	// it so that it gets served as a static asset in prod
-	export const prerender = true;
+let nftsGetLoading = true;
+
+let museumNfts = [];
+
+onMount(async () => {
+	await init();
+	const _balance = await contracts.myToken.balanceOf(contracts.museum.address);
+  
+  const _promises = [];
+  
+  for (let i = 0; i < _balance; i++) {
+    _promises.push(contracts.myToken.tokenOfOwnerByIndex(contracts.museum.address, String(i)));
+  }
+
+  museumNfts = await Promise.all(_promises);
+  museumNfts = museumNfts.map(nft => nft.toNumber());
+  
+	museumNfts = await Promise.all(museumNfts.map(async (tokenId) => {
+		const owner = await contracts.museum.collateralNFTOwner(tokenId);
+		return {
+			tokenId,
+			owner,
+		};
+	}));
+
+	nftsGetLoading = false;
+})
+
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Museum</title>
 </svelte:head>
 
 <div class="content">
-	<h1>About this app</h1>
 
+	<h1>Art showing in museum</h1>
+	
 	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
-		following into your command line and following the prompts:
+		lorem ipsum factum, lorem ipsum factum lorem ipsum factum, lorem ipsum factum
 	</p>
 
-	<!-- TODO lose the @next! -->
-	<pre>npm init svelte@next</pre>
-
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
-
-	<p>
-		The <a href="/todos">TODOs</a> page illustrates SvelteKit's data loading and form handling. Try using
-		it with JavaScript disabled!
-	</p>
+	{#if nftsGetLoading}
+		Loading art... plase wait
+	{:else}
+		<div class="flex w-full">
+			<div class="flex w-full">
+				{#each museumNfts as nft}
+					<div class="w-1/3 p-10 text-center">
+						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" />
+						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId} lend by {nft.owner.slice(0,4)}...{nft.owner.slice(-4)}</h2>
+					</div>
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
