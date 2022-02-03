@@ -32,10 +32,10 @@ Promise.all(allImages).then(async (images) => {
 
           const canvas = createCanvas(512, 512);
           const ctx = canvas.getContext('2d');
-          ctx.drawImage(images[i0], 0, 0, 250, 250, 0, 0, 250, 250);
-          ctx.drawImage(images[i1], 0, 250, 250, 250, 0, 250, 250, 250);
-          ctx.drawImage(images[i2], 250, 0, 250, 250, 250, 0, 250, 250);
-          ctx.drawImage(images[i3], 250, 250, 250, 250, 250, 250, 250, 250);
+          ctx.drawImage(images[i0], 0, 0, 256, 256, 0, 0, 256, 256);
+          ctx.drawImage(images[i1], 0, 256, 256, 256, 0, 256, 256, 256);
+          ctx.drawImage(images[i2], 256, 0, 256, 256, 256, 0, 256, 256);
+          ctx.drawImage(images[i3], 256, 256, 256, 256, 256, 256, 256, 256);
 
 
           const fs = require('fs')
@@ -48,7 +48,7 @@ Promise.all(allImages).then(async (images) => {
               resolve();
             })
           });
-
+          
           // Disable 2x2 chromaSubsampling for deeper colors and use a higher quality
           // const stream = canvas.createJPEGStream({
           //   quality: 0.95,
