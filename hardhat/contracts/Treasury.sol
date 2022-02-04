@@ -76,24 +76,17 @@ contract Treasury is Ownable {
 
   function withdrawAAVE(address _user, uint _amount) public payable {
     IAToken(aMATIC).approve(address(WETHGateway), _amount);
-    address _lendingPool = ILendingPoolAddressesProvider(
-        LendingPoolAddressesProviderAddress
-    ).getLendingPool();
-
+    
     // 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889 WMATIC address
-    ILendingPool(_lendingPool).withdraw(
+    ILendingPool(seeLendingPool()).withdraw(
         address(wMATIC),
         _amount,
         _user
         );
   }
   function depositAAVE() public payable {
-    address _lendingPool = ILendingPoolAddressesProvider(
-        LendingPoolAddressesProviderAddress
-    ).getLendingPool();
-
     WETHGateway.depositETH{value: msg.value }(
-        _lendingPool,
+        seeLendingPool(),
         address(this),
         0
     );
