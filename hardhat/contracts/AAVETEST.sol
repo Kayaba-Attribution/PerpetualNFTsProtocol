@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 import "./Interfaces.sol";
-
 interface IMATIC {
   function deposit() external payable;
 
@@ -25,7 +24,8 @@ interface IMATIC {
 
 }
 
-contract Treasury is Ownable {
+
+contract AAVETEST is Ownable {
   IWETHGateway WETHGateway;
   address LendingPoolAddressesProviderAddress;
   IAToken aMATIC;
@@ -49,21 +49,7 @@ contract Treasury is Ownable {
     IAToken(aMATIC).approve(address(this), type(uint).max);
     IMATIC(_wMATIC).approve(address(this), type(uint).max);
   }
-
-  function release(address releaser, uint256 nftTokenValue) external onlyOwner {
-    uint256 _releaseValue = (nftTokenValue * 90 / 100);
-    //Address.sendValue(payable(releaser), _releaseValue);
-
-    //Take off that amount from AAVE and send to user
-    withdrawAAVE(releaser, _releaseValue);
-
-    // No need to do extra transfer, withdrawAAVE now send wETH to user
-    // Now the release sends back wMATIC (For Now)
-    //require(wMATIC.balanceOf(address(this)) > _releaseValue, "Not enough wMATIC to release");
-    //wMATIC.transfer(releaser, _releaseValue);
-  }
-
-  function withdrawAAVE(address _user, uint _amount) public payable {
+  function withdrawAAVE(uint _amount, address user) public payable {
     IAToken(aMATIC).approve(address(WETHGateway), _amount);
     address _lendingPool = ILendingPoolAddressesProvider(
         LendingPoolAddressesProviderAddress
@@ -73,7 +59,7 @@ contract Treasury is Ownable {
     ILendingPool(_lendingPool).withdraw(
         address(wMATIC),
         _amount,
-        _user
+        address(this)
         );
   }
   function depositAAVE() public payable {
@@ -97,10 +83,7 @@ contract Treasury is Ownable {
       wMATIC.withdraw(_amount);
   }
 
-  // function to send rewards upon liquidation
-  function sendMoney(address user, uint256 amount) public onlyOwner {
-    Address.sendValue(payable(user), amount);
-  }
+
 
   function seeLendingPool() public view returns (address){
       return ILendingPoolAddressesProvider(LendingPoolAddressesProviderAddress).getLendingPool();
@@ -113,10 +96,16 @@ contract Treasury is Ownable {
   function wMATICbalance(address _addr) public view returns(uint256){
       return wMATIC.balanceOf(_addr);
   }
-  function maticBalance(address _addr) public view returns(uint){
+
+  function maticBalanceContract() public view returns(uint){
+      return address(this).balance;
+  }
+
+  function maticBalanceAddress(address _addr) public view returns(uint){
       return _addr.balance;
   }
+
   receive() external payable {
-    // depositAAVE();
+    //depositAAVE();
   }
 }

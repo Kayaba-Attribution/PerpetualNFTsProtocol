@@ -276,7 +276,7 @@
 		</div>
 		<div class="md:w-1/2 text-center">
 
-			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="src/lib/images/kayabaProfile.jpg" alt="Avatar Damien Marley"/>
+			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="src/lib/images/progilegif.gif" alt="Avatar Damien Marley"/>
 			<div class="bg-white shadow-lg rounded-lg px-8 pt-32 pb-10 text-gray-400">
 				<h3 class="font-title text-gray-800 text-xl mb-3">
 					Kayaba_Attribution
@@ -287,7 +287,7 @@
 				<p class="font-body text-sm mb-4">
 					He&#x27;s fun and listen everyday Bob Marley
 				</p>
-				<a class="font-body text-blue-500 hover:text-gray-800" href="mailto:dino@siete.pm">
+				<a class="font-body text-blue-500 hover:text-gray-800" href="">
 					Kayaba_Attribution
 				</a>
 			</div>

@@ -50,8 +50,8 @@ async function loadDebt() {
 let borrowing = false;
 async function borrow() {
 	try {
-		const tx = await contracts.museum.borrow(borrowAmount);
 		borrowing = true;
+		const tx = await contracts.museum.borrow(borrowAmount);
 		await tx.wait(1);
 		pct = 0;
 		await loadDebt();
@@ -93,38 +93,6 @@ function  BigNumFixed(value, n) {
 			</div>
 		{/if}
 
-
-		<!-- <p>{maticSpotPrice}</p>
-		<table>
-			<tbody>
-				<tr>
-					<td class="w-full">Collateral value: </td>
-					<td>{formatEther(currentCollateral)}</td>
-				</tr>
-				<tr>
-					<td class="w-full">Borrowed: </td>
-					<td>{formatEther(currentDebt)}</td>
-				</tr>
-				<tr>
-					<td class="w-full">Health factor: </td>
-					<td>{healthFactor.toFixed(2)}%</td>
-				</tr>
-				<tr>	
-					<td class="w-full">Max borrow: </td>
-					<td>{formatEther(maxBorrow)}</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<b>{borrowAmount ? formatEther(borrowAmount) : '---'}</b><hr />
-		<input type="range" bind:value={pct} min="0" max="100" step="any" />
-		<br />
-		<button on:click={borrow} 
-		class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
-		class:disabled={borrowing}
-		class:cursor-wait={borrowing}>
-		Take loan</button>	
-<br /> -->
 <!--
 				  _____      _ _       _                 _  __      __   _            
 			     / ____|    | | |     | |               | | \ \    / /  | |           
@@ -281,11 +249,14 @@ function  BigNumFixed(value, n) {
 					<path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
 					</path>
 				</svg>
-				{/if}
+				Taking Loan...
+				{:else}
 				Take Loan
+				{/if}
 			</button>
 		</div>
-		<p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {healthFactor.toFixed(2)}%</p>
+		<!-- Calculate health factor on the fly yo se que es asqueroso jaja -->
+		<p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {(Number(healthFactor.toFixed(2)) + (borrowAmount ? Number(borrowAmount.mul(10000).div(currentCollateral)) / 100 : 0)).toFixed(3)}%</p>
 
 	</div>
 	{:else}

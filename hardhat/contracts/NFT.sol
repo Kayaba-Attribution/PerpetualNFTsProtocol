@@ -8,15 +8,19 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+import "./Treasury.sol";
+
 contract MyToken is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
+    Treasury public treasury;
 
     Counters.Counter private _tokenIdCounter;
 
-    address public treasury;
+    // address public treasury;
 
-    constructor(address _treasury) ERC721("MyToken", "MTK") {
-        treasury = _treasury;
+    constructor(address payable _treasury) ERC721("MyToken", "MTK") {
+        //treasury = _treasury;
+        treasury = Treasury(_treasury);
     }
 
     function nftValue() public pure returns(uint256) {
@@ -29,8 +33,9 @@ contract MyToken is ERC721, ERC721Enumerable, Ownable {
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         // transfer ether to the treasury
-        (bool success, ) = payable(treasury).call{value: nftValue()}("");
-        require(success, "mint fail");
+        // (bool success, ) = payable(treasury).call{value: nftValue()}("");
+        // require(success, "mint fail");
+        treasury.depositAAVE{value: msg.value}();
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)

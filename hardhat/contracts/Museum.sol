@@ -67,7 +67,6 @@ contract Museum is Ownable, IERC721Receiver {
 
 
   function currentDebt(address user) public view returns(uint256) {
-    //5% anual
 
     uint256 deltaT = (block.timestamp - borrowedTime[user]);
     // 10000 = 10% yearly
@@ -90,7 +89,10 @@ contract Museum is Ownable, IERC721Receiver {
     delete borrowedTime[user];
 
     // rewards for liquidation!
-    treasury.sendMoney(msg.sender, 0.1 ether);
+    //treasury.sendMoney(msg.sender, 0.1 ether);
+
+    //AAVE changes
+    treasury.withdrawAAVE(msg.sender, 0.1 ether);
   }
 
   function borrow(uint256 amount) external updateDebt {
@@ -99,7 +101,8 @@ contract Museum is Ownable, IERC721Receiver {
 
     borrowed[msg.sender] += amount;
 
-    treasury.sendMoney(msg.sender, amount);
+    //treasury.sendMoney(msg.sender, amount);
+    treasury.withdrawAAVE(msg.sender, amount);
 
     emit Borrow(msg.sender, amount);
   }
@@ -109,11 +112,21 @@ contract Museum is Ownable, IERC721Receiver {
     if(borrowed[msg.sender] < msg.value) {
       emit Repay(msg.sender, borrowed[msg.sender]);
       uint256 _changeBack = msg.value - borrowed[msg.sender];
-      borrowed[msg.sender] = 0;
-      
+      //borrowed[msg.sender] = 0;
+      // devuelve el dinero
       Address.sendValue(payable(msg.sender), _changeBack);
+
+      // AAVE changes
+      // manda el dinero
+      treasury.depositAAVE{value: borrowed[msg.sender]}();
+      // borra la deuda
+      borrowed[msg.sender] = 0;
+
     } else {
       borrowed[msg.sender] -= msg.value;
+
+      //AAVE changes
+      treasury.depositAAVE{value: msg.value}();
 
       /*
       valor individual = msg.value / obras de colateral

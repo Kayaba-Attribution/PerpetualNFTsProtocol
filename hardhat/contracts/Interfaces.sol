@@ -2,6 +2,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
 
 interface IAToken is IERC20, IScaledBalanceToken {
+
   /**
    * @dev Emitted after the mint action
    * @param from The address performing the mint
@@ -54,6 +55,8 @@ interface IAToken is IERC20, IScaledBalanceToken {
     uint256 amount,
     uint256 index
   ) external;
+
+
 
   /**
    * @dev Mints aTokens to the reserve treasury
@@ -116,3 +119,24 @@ interface IWETHGateway {
 
   function getWETHAddress() external view returns (address);
 }
+
+interface ILendingPool {
+
+    function deposit(address asset, uint256 amount, address onBehalfOf, uint16 referralCode) external;
+
+    function borrow(address asset, uint256 amount, uint256 interestRateMode, uint16 referralCode, address onBehalfOf) external;
+
+    function repay(address asset, uint256 amount, uint256 rateMode, address onBehalfOf) external returns (uint256);
+
+    function withdraw(address asset, uint256 amount, address to) external returns (uint256);
+
+    function getUserAccountData(address user) external view returns (
+        uint256 totalCollateralETH,
+        uint256 totalDebtETH,
+        uint256 availableBorrowsETH,
+        uint256 currentLiquidationThreshold,
+        uint256 ltv,
+        uint256 healthFactor
+    );
+}
+
