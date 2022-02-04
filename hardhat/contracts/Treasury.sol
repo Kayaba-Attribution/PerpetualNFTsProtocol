@@ -9,7 +9,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Interfaces.sol";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 interface IMATIC is IERC20{
+=======
+interface IWMATIC is IERC20{
+>>>>>>> refactor nombre de interfaz
   function deposit() external payable;
 
   function withdraw(uint256) external;
@@ -22,7 +26,7 @@ contract Treasury is Ownable {
   IWETHGateway WETHGateway;
   address LendingPoolAddressesProviderAddress;
   IAToken aMATIC;
-  IMATIC wMATIC;
+  IWMATIC wMATIC;
 
   // mumbai
   // _WETHGateway 0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA
@@ -37,7 +41,7 @@ contract Treasury is Ownable {
     WETHGateway = IWETHGateway(_WETHGateway);
     LendingPoolAddressesProviderAddress = _LendingPoolAddressesProviderAddress;
     aMATIC = IAToken(_aMATIC);
-    wMATIC = IMATIC(WETHGateway.getWETHAddress());
+    wMATIC = IWMATIC(WETHGateway.getWETHAddress());
     aMATIC.approve(address(WETHGateway), type(uint).max);
     aMATIC.approve(address(this), type(uint).max);
     wMATIC.approve(address(this), type(uint).max);
