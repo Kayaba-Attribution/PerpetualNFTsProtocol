@@ -51,15 +51,15 @@ contract Treasury is Ownable {
   function Info() public view returns(uint) {
 
     (
-      uint256 currentATokenBalance,
-      uint256 currentStableDebt,
-      uint256 currentVariableDebt,
-      uint256 principalStableDebt,
-      uint256 scaledVariableDebt,
-      uint256 stableBorrowRate,
+      ,//uint256 currentATokenBalance,
+      ,//uint256 currentStableDebt,
+      ,//uint256 currentVariableDebt,
+      ,//uint256 principalStableDebt,
+      ,//uint256 scaledVariableDebt,
+      ,//uint256 stableBorrowRate,
       uint256 liquidityRate,
-      uint40 stableRateLastUpdated,
-      bool usageAsCollateralEnabled
+      ,//,uint40 stableRateLastUpdated,
+      //,bool usageAsCollateralEnabled
     ) = IAAVEdataProvider(0xFA3bD19110d986c5e5E9DD5F69362d05035D045B).getUserReserveData(address(wMATIC), address(this));
 
     return liquidityRate;
