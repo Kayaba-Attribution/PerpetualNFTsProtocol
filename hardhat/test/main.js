@@ -7,7 +7,6 @@ let treasury, myToken, museum;
 const WETHGateway = "0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA";
 const LendingPoolAddressesProviderAddress = "0x178113104fEcbcD7fF8669a0150721e231F0FD4B";
 const aMATIC = "0xF45444171435d0aCB08a8af493837eF18e86EE27";
-const wMATIC = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889";
 
 // Mumbai Mainnet AAVE Addresses
 // const WETHGateway = "0xbEadf48d62aCC944a06EEaE0A9054A90E5A7dc97";
@@ -23,7 +22,7 @@ describe("MAIN NFT Perpetual DeFi", function() {
 
   it("Should deploy", async function () {
     const Treasury = await ethers.getContractFactory("Treasury");
-    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC,wMATIC);
+    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
     await treasury.deployed();
 
     const MyToken = await ethers.getContractFactory("MyToken");

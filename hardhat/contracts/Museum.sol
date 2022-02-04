@@ -101,8 +101,8 @@ contract Museum is Ownable, IERC721Receiver {
 
     borrowed[msg.sender] += amount;
 
-    //treasury.sendMoney(msg.sender, amount);
     treasury.withdrawAAVE(msg.sender, amount);
+    // treasury.borrowAAVE(msg.sender, amount);
 
     emit Borrow(msg.sender, amount);
   }

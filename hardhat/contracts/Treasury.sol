@@ -5,23 +5,13 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Interfaces.sol";
 
-interface IMATIC {
+interface IMATIC is IERC20{
   function deposit() external payable;
 
   function withdraw(uint256) external;
-
-  function approve(address guy, uint256 wad) external returns (bool);
-
-  function transferFrom(
-    address src,
-    address dst,
-    uint256 wad
-  ) external returns (bool);
-
-  function balanceOf(address _owner) external view returns (uint balance);
-  function transfer(address dst, uint wad) external returns (bool);
 
 }
 
@@ -40,14 +30,14 @@ contract Treasury is Ownable {
   // WETHGATEWAY 0xbEadf48d62aCC944a06EEaE0A9054A90E5A7dc97
   // lendingPool 0xd05e3E715d945B59290df0ae8eF85c1BdB684744
   // aMATIC 0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4
-  constructor(address _WETHGateway, address _LendingPoolAddressesProviderAddress, address _aMATIC, address _wMATIC) {
+  constructor(address _WETHGateway, address _LendingPoolAddressesProviderAddress, address _aMATIC /*, address _wMATIC */) {
     WETHGateway = IWETHGateway(_WETHGateway);
     LendingPoolAddressesProviderAddress = _LendingPoolAddressesProviderAddress;
     aMATIC = IAToken(_aMATIC);
-    wMATIC = IMATIC(_wMATIC);
-    IAToken(aMATIC).approve(address(WETHGateway), type(uint).max);
-    IAToken(aMATIC).approve(address(this), type(uint).max);
-    IMATIC(_wMATIC).approve(address(this), type(uint).max);
+    wMATIC = IMATIC(WETHGateway.getWETHAddress());
+    aMATIC.approve(address(WETHGateway), type(uint).max);
+    aMATIC.approve(address(this), type(uint).max);
+    wMATIC.approve(address(this), type(uint).max);
   }
 
   function release(address releaser, uint256 nftTokenValue) external onlyOwner {
