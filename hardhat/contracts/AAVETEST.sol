@@ -6,24 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 import "./Interfaces.sol";
-interface IMATIC {
-  function deposit() external payable;
-
-  function withdraw(uint256) external;
-
-  function approve(address guy, uint256 wad) external returns (bool);
-
-  function transferFrom(
-    address src,
-    address dst,
-    uint256 wad
-  ) external returns (bool);
-
-  function balanceOf(address _owner) external view returns (uint balance);
-  function transfer(address dst, uint wad) external returns (bool);
-
-}
-
 
 contract AAVETEST is Ownable {
   IWETHGateway WETHGateway;

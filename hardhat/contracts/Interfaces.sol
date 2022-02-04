@@ -1,6 +1,39 @@
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
+interface IMATIC {
+  function deposit() external payable;
 
+  function withdraw(uint256) external;
+
+  function approve(address guy, uint256 wad) external returns (bool);
+
+  function transferFrom(
+    address src,
+    address dst,
+    uint256 wad
+  ) external returns (bool);
+
+  function balanceOf(address _owner) external view returns (uint balance);
+  function transfer(address dst, uint wad) external returns (bool);
+
+}
+
+interface IAAVEdataProvider {
+    function getUserReserveData(address asset, address user)
+    external
+    view
+    returns (
+      uint256 currentATokenBalance,
+      uint256 currentStableDebt,
+      uint256 currentVariableDebt,
+      uint256 principalStableDebt,
+      uint256 scaledVariableDebt,
+      uint256 stableBorrowRate,
+      uint256 liquidityRate,
+      uint40 stableRateLastUpdated,
+      bool usageAsCollateralEnabled
+    );
+}
 interface IAToken is IERC20, IScaledBalanceToken {
 
   /**

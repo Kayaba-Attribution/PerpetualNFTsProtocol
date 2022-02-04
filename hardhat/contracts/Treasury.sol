@@ -8,12 +8,15 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Interfaces.sol";
 
+<<<<<<< HEAD
 interface IMATIC is IERC20{
   function deposit() external payable;
 
   function withdraw(uint256) external;
 
 }
+=======
+>>>>>>> Interfaces CleanUp and Basic AAVE interest quote in test/info.test.js
 
 contract Treasury is Ownable {
   IWETHGateway WETHGateway;
@@ -38,6 +41,24 @@ contract Treasury is Ownable {
     aMATIC.approve(address(WETHGateway), type(uint).max);
     aMATIC.approve(address(this), type(uint).max);
     wMATIC.approve(address(this), type(uint).max);
+  }
+
+  //https://docs.aave.com/developers/v/2.0/the-core-protocol/protocol-data-provider
+  function Info() public view returns(uint) {
+
+    (
+      uint256 currentATokenBalance,
+      uint256 currentStableDebt,
+      uint256 currentVariableDebt,
+      uint256 principalStableDebt,
+      uint256 scaledVariableDebt,
+      uint256 stableBorrowRate,
+      uint256 liquidityRate,
+      uint40 stableRateLastUpdated,
+      bool usageAsCollateralEnabled
+    ) = IAAVEdataProvider(0xFA3bD19110d986c5e5E9DD5F69362d05035D045B).getUserReserveData(address(wMATIC), address(this));
+
+    return liquidityRate;
   }
 
   function release(address releaser, uint256 nftTokenValue) external onlyOwner {
