@@ -2,7 +2,6 @@
 
 
 import { onMount } from 'svelte';
-import { tweened } from 'svelte/motion';
 
 
 import { formatEther } from '@ethersproject/units';
@@ -30,12 +29,10 @@ onMount(async () => {
 	
 	await loadDebt();
 
-	await fetch('https://api.covalenthq.com/v1/pricing/tickers/?quote-currency=USD&format=JSON&tickers=matic&key=ckey_814a704909fe46aca8efc7cb84b')
-		.then((response) => response.json())
-		.then((call) => {
-			maticSpotPrice = call.data.items[0].quote_rate;
-		})
-
+	let response = await fetch('https://api.covalenthq.com/v1/pricing/tickers/?quote-currency=USD&format=JSON&tickers=matic&key=ckey_814a704909fe46aca8efc7cb84b');
+	response = await response.json();
+	maticSpotPrice = response.data.items[0].quote_rate;
+	
 	loading = false;
 });
 
