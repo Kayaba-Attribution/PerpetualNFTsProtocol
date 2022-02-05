@@ -269,7 +269,7 @@
 				<p class="font-body text-sm mb-4">
 					OG, he love caramel and he hate PHP
 				</p>
-				<a class="font-body text-blue-500 hover:text-gray-800" href="#">
+				<a class="font-body text-blue-500 hover:text-gray-800" target="_blank" href="https://github.com/eugenioclrc/">
 					0x4non
 				</a>
 			</div>
@@ -287,7 +287,7 @@
 				<p class="font-body text-sm mb-4">
 					He&#x27;s fun and listen everyday Bob Marley
 				</p>
-				<a class="font-body text-blue-500 hover:text-gray-800" href="">
+				<a class="font-body text-blue-500 hover:text-gray-800" target="_blank" href="https://github.com/Kayaba-Attribution">
 					Kayaba_Attribution
 				</a>
 			</div>
