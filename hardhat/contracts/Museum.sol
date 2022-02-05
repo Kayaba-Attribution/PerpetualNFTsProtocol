@@ -99,13 +99,19 @@ contract Museum is Ownable, IERC721Receiver {
     treasury.withdrawAAVE(msg.sender, 0.1 ether);
   }
 
-  function borrow(uint256 amount) external updateDebt {
+  function borrow(uint256 amount, uint8 asset) external updateDebt {
 
     require(amount <= maxBorrow(msg.sender), "You cant borrow more than");
 
     borrowed[msg.sender] += amount;
 
-    treasury.withdrawAAVE(msg.sender, amount);
+    if(asset == 0){
+      treasury.withdrawAAVE(msg.sender, amount);
+    }else if(asset == 1){
+      treasury.withdrawAAVEwMATIC(msg.sender, amount);
+    }else{
+      require(asset <= 1, "Borrow Asset Not Supported" );
+    }
     // treasury.borrowAAVE(msg.sender, amount);
 
     emit Borrow(msg.sender, amount);

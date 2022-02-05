@@ -113,7 +113,7 @@ describe("MAIN NFT Perpetual DeFi", function() {
     await museum.connect(alice).deposit("1");
 
     const aliceBalanceBefore = await treasury.wMATICbalance(alice.address);
-    await museum.connect(alice).borrow(parseEther("0.5"));
+    await museum.connect(alice).borrow(parseEther("0.5"), "1");
     const aliceBalanceAfter = await treasury.wMATICbalance(alice.address);
     // Debt must be close to 0 as the loan was just taken
     expect(await museum.currentDebt(alice.address)).closeTo("0", "10");

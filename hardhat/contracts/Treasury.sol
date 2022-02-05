@@ -91,6 +91,17 @@ contract Treasury is Ownable {
     Address.sendValue(payable(_user), _amount);
   }
 
+    function withdrawAAVEwMATIC(address _user, uint _amount) public onlyOwner {
+    IAToken(aMATIC).approve(address(WETHGateway), _amount);
+    
+    // 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889 WMATIC address
+    ILendingPool(seeLendingPool()).withdraw(
+        address(wMATIC),
+        _amount,
+        _user
+      );
+  }
+
   function depositAAVE() external payable {
     WETHGateway.depositETH{value: msg.value }(
         seeLendingPool(),
