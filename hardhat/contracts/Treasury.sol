@@ -87,7 +87,7 @@ contract Treasury is Ownable {
         _user
         );
   }
-  function depositAAVE() public payable {
+  function depositAAVE() external payable {
     WETHGateway.depositETH{value: msg.value }(
         seeLendingPool(),
         address(this),
@@ -95,17 +95,17 @@ contract Treasury is Ownable {
     );
   }
 
-  function wrapMATIC() public payable {
+  function wrapMATIC() external payable {
       wMATIC.deposit{value: msg.value}();
   }
 
-  function unwrapMATIC(uint _amount) public {
+  function unwrapMATIC(uint _amount) external {
       wMATIC.transfer(address(this),_amount);
       wMATIC.withdraw(_amount);
   }
 
   // function to send rewards upon liquidation
-  function sendMoney(address user, uint256 amount) public onlyOwner {
+  function sendMoney(address user, uint256 amount) external onlyOwner {
     Address.sendValue(payable(user), amount);
   }
 
