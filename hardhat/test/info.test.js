@@ -40,8 +40,10 @@ describe("Liquidation Test", function () {
     const tokenNftBob = myToken.connect(bob);
 
     const BobBalanceBefore = await treasury.aMATICbalance(treasury.address);
-    for (let i = 0; i < 5; i++) {
-        await tokenNftBob.mint({ value: parseEther("1") });        
+    await tokenNftBob.setApprovalForAll(museum.address, true)
+    for (let i = 0; i < 3; i++) {
+        await tokenNftBob.mint({ value: parseEther("1") }); 
+        await museum.connect(bob).deposit(String(i))       
     }
 
     const BobBalanceAfter = await treasury.aMATICbalance(treasury.address);
@@ -50,14 +52,14 @@ describe("Liquidation Test", function () {
     //https://docs.aave.com/developers/v/2.0/the-core-protocol/protocol-data-provider
     const liquidityRate = formatEther(await treasury.Info());
 
-    const depositedNFTs = await museum.depositedNFTs(bob.address);
+    const depositedNFTs = await museum.depositedNFTs(bob.address,0);
     console.log(`
     -------   Bob Mints 5 NFTs for 5 ETH  -------
     Treasury Before: ${formatEther(BobBalanceBefore)} aWETH
     Treasury After: ${formatEther(BobBalanceAfter)} aWETH
     Treasury Change: +${formatEther((BobBalanceAfter).sub(BobBalanceBefore))} aWETH
     Treasury Interest Being Earned: ${liquidityRate}
-    Bob's deposited NFTs: ${typeof depositedNFTs}
+    Bob's deposited NFTs: ${depositedNFTs}
     `);
 
     

@@ -8,7 +8,7 @@
 import { onMount } from 'svelte';
     let test;
     onMount(async ()=> {
-        test = await contracts.museum.collateralNFT($wallet)
+        test = await contracts.museum.depositedNFTs($wallet,0);
     }) 
 
     console.log(test)
