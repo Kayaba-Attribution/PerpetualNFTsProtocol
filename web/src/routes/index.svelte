@@ -294,19 +294,10 @@
 		</div>
 	</div>
 	
-	<h1>HOLA {$wallet}	</h1>
-
+	
 	{#if $wrongNetwork}
 		estas en al red equivocada
 		<button on:click={() => pickNetwork()}>CHANGE TO HARDHAT</button>
-	{/if}
-	<h2>
-		tienes {$balance} NFTs
-	</h2>
-	{#if !minteando}
-		<button on:click={() => mint()}>comprar nft</button>
-	{:else}
-		minteando, aguanta la mecha
 	{/if}
 	<div class="flex w-full">
 		<div class="flex w-full">
