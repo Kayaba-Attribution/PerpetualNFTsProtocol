@@ -2,9 +2,12 @@
 
 
 import { onMount } from 'svelte';
+import { tweened } from 'svelte/motion';
+
 
 import { formatEther } from '@ethersproject/units';
 import { contracts, init, wallet } from '$lib/eth.js';
+import InfoSquare from '$lib/loans/infoSquare.svelte';
 
 let loading = true;
 
@@ -63,6 +66,7 @@ async function borrow() {
 
 let maticSpotPrice;
 
+
 function BigNumMaticToUsd(value) {
 	return (maticSpotPrice * Number(formatEther(value))).toFixed(3)
 }
@@ -93,111 +97,40 @@ function  BigNumFixed(value, n) {
 			</div>
 		{/if}
 
-<!--
-				  _____      _ _       _                 _  __      __   _            
-			     / ____|    | | |     | |               | | \ \    / /  | |           
+
+
+		<div class="grid grid-cols-3 gap-4">
+			<!--
+				_____      _ _       _                 _  __      __   _            
+				/ ____|    | | |     | |               | | \ \    / /  | |           
 				| |     ___ | | | __ _| |_ ___ _ __ __ _| |  \ \  / /_ _| |_   _  ___ 
 				| |    / _ \| | |/ _` | __/ _ \ '__/ _` | |   \ \/ / _` | | | | |/ _ \
 				| |___| (_) | | | (_| | ||  __/ | | (_| | |    \  / (_| | | |_| |  __/
-				 \_____\___/|_|_|\__,_|\__\___|_|  \__,_|_|     \/ \__,_|_|\__,_|\___|
--->                  
-	<div class="grid grid-cols-3 gap-4">
-		<div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-800" hover:bg-sky-700>
-			<div class="flex items-center">
-				<span class="rounded-xl relative p-4 bg-purple-200">
-					<svg width="40" fill="currentColor" height="40" class="text-purple-500 h-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-						<path d="M1362 1185q0 153-99.5 263.5t-258.5 136.5v175q0 14-9 23t-23 9h-135q-13 0-22.5-9.5t-9.5-22.5v-175q-66-9-127.5-31t-101.5-44.5-74-48-46.5-37.5-17.5-18q-17-21-2-41l103-135q7-10 23-12 15-2 24 9l2 2q113 99 243 125 37 8 74 8 81 0 142.5-43t61.5-122q0-28-15-53t-33.5-42-58.5-37.5-66-32-80-32.5q-39-16-61.5-25t-61.5-26.5-62.5-31-56.5-35.5-53.5-42.5-43.5-49-35.5-58-21-66.5-8.5-78q0-138 98-242t255-134v-180q0-13 9.5-22.5t22.5-9.5h135q14 0 23 9t9 23v176q57 6 110.5 23t87 33.5 63.5 37.5 39 29 15 14q17 18 5 38l-81 146q-8 15-23 16-14 3-27-7-3-3-14.5-12t-39-26.5-58.5-32-74.5-26-85.5-11.5q-95 0-155 43t-60 111q0 26 8.5 48t29.5 41.5 39.5 33 56 31 60.5 27 70 27.5q53 20 81 31.5t76 35 75.5 42.5 62 50 53 63.5 31.5 76.5 13 94z">
-						</path>
-					</svg>
-				</span>
-				<p class="text-md text-black dark:text-white ml-2">
-					Collateral Value
-				</p>
-			</div>
-			<div class="flex flex-col justify-start">
-				<p class="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-					{BigNumMaticToUsd(currentCollateral)}
-					<span class="text-sm">
-						USD
-					</span>
-				</p>
-			</div>
-			<div class="flex items-center text-gray-700 dark:text-gray-100 text-sm">
-				<span>
-					{formatEther(currentCollateral)} MATIC
-				</span>
-			</div>
-		</div>
+				\_____\___/|_|_|\__,_|\__\___|_|  \__,_|_|     \/ \__,_|_|\__,_|\___|
+			-->                  
+			<InfoSquare title="Collateral Value" value={currentCollateral} {maticSpotPrice} />
+			<!-- 
+									____                                       _ 
+									|  _ \                                     | |
+									| |_) | ___  _ __ _ __ _____      _____  __| |
+									|  _ < / _ \| '__| '__/ _ \ \ /\ / / _ \/ _` |
+									| |_) | (_) | |  | | | (_) \ V  V /  __/ (_| |
+									|____/ \___/|_|  |_|  \___/ \_/\_/ \___|\__,_|
 
-<!-- 
-						 ____                                       _ 
-						|  _ \                                     | |
-						| |_) | ___  _ __ _ __ _____      _____  __| |
-						|  _ < / _ \| '__| '__/ _ \ \ /\ / / _ \/ _` |
-						| |_) | (_) | |  | | | (_) \ V  V /  __/ (_| |
-						|____/ \___/|_|  |_|  \___/ \_/\_/ \___|\__,_|
-
- -->
-		<div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-800">
-			<div class="flex items-center">
-				<span class="rounded-xl relative p-4 bg-purple-200">
-					<svg width="40" fill="currentColor" height="40" class="text-purple-500 h-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-						<path d="M1362 1185q0 153-99.5 263.5t-258.5 136.5v175q0 14-9 23t-23 9h-135q-13 0-22.5-9.5t-9.5-22.5v-175q-66-9-127.5-31t-101.5-44.5-74-48-46.5-37.5-17.5-18q-17-21-2-41l103-135q7-10 23-12 15-2 24 9l2 2q113 99 243 125 37 8 74 8 81 0 142.5-43t61.5-122q0-28-15-53t-33.5-42-58.5-37.5-66-32-80-32.5q-39-16-61.5-25t-61.5-26.5-62.5-31-56.5-35.5-53.5-42.5-43.5-49-35.5-58-21-66.5-8.5-78q0-138 98-242t255-134v-180q0-13 9.5-22.5t22.5-9.5h135q14 0 23 9t9 23v176q57 6 110.5 23t87 33.5 63.5 37.5 39 29 15 14q17 18 5 38l-81 146q-8 15-23 16-14 3-27-7-3-3-14.5-12t-39-26.5-58.5-32-74.5-26-85.5-11.5q-95 0-155 43t-60 111q0 26 8.5 48t29.5 41.5 39.5 33 56 31 60.5 27 70 27.5q53 20 81 31.5t76 35 75.5 42.5 62 50 53 63.5 31.5 76.5 13 94z">
-						</path>
-					</svg>
-				</span>
-				<p class="text-md text-black dark:text-white ml-2">
-					Borrowed
-				</p>
-			</div>
-			<div class="flex flex-col justify-start">
-				<p class="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-					{BigNumMaticToUsd(currentDebt)}
-					<span class="text-sm">
-						USD
-					</span>
-				</p>
-			</div>
-			<div class="flex items-center text-gray-700 dark:text-gray-100 text-sm">
-				<span>
-					{BigNumFixed(currentDebt,3)} MATIC
-				</span>
-			</div>
-		</div>
-<!-- 
-					     __  __              ____                               
-						|  \/  |            |  _ \                              
-						| \  / | __ ___  __ | |_) | ___  _ __ _ __ _____      __
-						| |\/| |/ _` \ \/ / |  _ < / _ \| '__| '__/ _ \ \ /\ / /
-						| |  | | (_| |>  <  | |_) | (_) | |  | | | (_) \ V  V / 
-						|_|  |_|\__,_/_/\_\ |____/ \___/|_|  |_|  \___/ \_/\_/ 
- -->
-		<div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-800">
-			<div class="flex items-center">
-				<span class="rounded-xl relative p-4 bg-purple-200">
-					<svg width="40" fill="currentColor" height="40" class="text-purple-500 h-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-						<path d="M1362 1185q0 153-99.5 263.5t-258.5 136.5v175q0 14-9 23t-23 9h-135q-13 0-22.5-9.5t-9.5-22.5v-175q-66-9-127.5-31t-101.5-44.5-74-48-46.5-37.5-17.5-18q-17-21-2-41l103-135q7-10 23-12 15-2 24 9l2 2q113 99 243 125 37 8 74 8 81 0 142.5-43t61.5-122q0-28-15-53t-33.5-42-58.5-37.5-66-32-80-32.5q-39-16-61.5-25t-61.5-26.5-62.5-31-56.5-35.5-53.5-42.5-43.5-49-35.5-58-21-66.5-8.5-78q0-138 98-242t255-134v-180q0-13 9.5-22.5t22.5-9.5h135q14 0 23 9t9 23v176q57 6 110.5 23t87 33.5 63.5 37.5 39 29 15 14q17 18 5 38l-81 146q-8 15-23 16-14 3-27-7-3-3-14.5-12t-39-26.5-58.5-32-74.5-26-85.5-11.5q-95 0-155 43t-60 111q0 26 8.5 48t29.5 41.5 39.5 33 56 31 60.5 27 70 27.5q53 20 81 31.5t76 35 75.5 42.5 62 50 53 63.5 31.5 76.5 13 94z">
-						</path>
-					</svg>
-				</span>
-				<p class="text-md text-black dark:text-white ml-2">
-					Max Borrow
-				</p>
-			</div>
-			<div class="flex flex-col justify-start">
-				<p class="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-					{BigNumMaticToUsd(maxBorrow)}
-					<span class="text-sm">
-						USD
-					</span>
-				</p>
-			</div>
-			<div class="flex items-center text-gray-700 dark:text-gray-100 text-sm">
-				<span>
-					{BigNumFixed(maxBorrow,3)} MATIC
-				</span>
-			</div>
-		</div>
+			-->
+			<InfoSquare title="Borrowed" value={currentDebt} {maticSpotPrice} />
+		
+			<!-- 
+										__  __              ____                               
+									|  \/  |            |  _ \                              
+									| \  / | __ ___  __ | |_) | ___  _ __ _ __ _____      __
+									| |\/| |/ _` \ \/ / |  _ < / _ \| '__| '__/ _ \ \ /\ / /
+									| |  | | (_| |>  <  | |_) | (_) | |  | | | (_) \ V  V / 
+									|_|  |_|\__,_/_/\_\ |____/ \___/|_|  |_|  \___/ \_/\_/ 
+			-->
+			<InfoSquare title="Max Borrow" value={maxBorrow} {maticSpotPrice} />
+			
+		
 	</div>
 
 	<!-- 
@@ -269,7 +202,7 @@ function  BigNumFixed(value, n) {
 	{/if}
 </div>
 
-
+<!--
 <footer class=" mt-3 flex flex-col items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 sm:flex-row">
 	<a href="#" class="text-xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Brand</a>
 	
@@ -305,7 +238,7 @@ function  BigNumFixed(value, n) {
 		</a>
 	</div>
 </footer>
-
+-->
 
 <style>
 	.content {
