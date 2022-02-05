@@ -22,7 +22,7 @@ describe("Liquidation Test", function () {
     [deployer, bob, alice] = await ethers.getSigners();
 
     const Treasury = await ethers.getContractFactory("Treasury");
-    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC, wMATIC);
+    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
     await treasury.deployed();
   
     const MyToken = await ethers.getContractFactory("MyToken");

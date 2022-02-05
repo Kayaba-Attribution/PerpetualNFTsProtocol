@@ -17,7 +17,6 @@ interface IWMATIC is IERC20{
   function deposit() external payable;
 
   function withdraw(uint256) external;
-
 }
 =======
 >>>>>>> Interfaces CleanUp and Basic AAVE interest quote in test/info.test.js

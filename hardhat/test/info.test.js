@@ -22,7 +22,7 @@ describe("Liquidation Test", function () {
     [deployer, bob, alice] = await ethers.getSigners();
 
     const Treasury = await ethers.getContractFactory("Treasury");
-    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC, wMATIC);
+    treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
     await treasury.deployed();
   
     const MyToken = await ethers.getContractFactory("MyToken");
@@ -50,12 +50,14 @@ describe("Liquidation Test", function () {
     //https://docs.aave.com/developers/v/2.0/the-core-protocol/protocol-data-provider
     const liquidityRate = formatEther(await treasury.Info());
 
+    const depositedNFTs = await museum.depositedNFTs(bob.address);
     console.log(`
     -------   Bob Mints 5 NFTs for 5 ETH  -------
     Treasury Before: ${formatEther(BobBalanceBefore)} aWETH
     Treasury After: ${formatEther(BobBalanceAfter)} aWETH
     Treasury Change: +${formatEther((BobBalanceAfter).sub(BobBalanceBefore))} aWETH
     Treasury Interest Being Earned: ${liquidityRate}
+    Bob's deposited NFTs: ${typeof depositedNFTs}
     `);
 
     
