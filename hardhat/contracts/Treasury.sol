@@ -77,7 +77,7 @@ contract Treasury is Ownable {
     //wMATIC.transfer(releaser, _releaseValue);
   }
 
-  function withdrawAAVE(address _user, uint _amount) public payable {
+  function withdrawAAVE(address _user, uint _amount) public onlyOwner {
     IAToken(aMATIC).approve(address(WETHGateway), _amount);
     
     // 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889 WMATIC address
