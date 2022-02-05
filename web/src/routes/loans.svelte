@@ -7,6 +7,7 @@ import { onMount } from 'svelte';
 import { formatEther } from '@ethersproject/units';
 import { contracts, init, wallet } from '$lib/eth.js';
 import InfoSquare from '$lib/loans/infoSquare.svelte';
+import TakeLoan from '$lib/loans/takeLoan.svelte';
 
 let loading = true;
 
@@ -23,6 +24,7 @@ $: if(pct) {
 	borrowAmount = 0;
 }
 
+let select = 'take';
 
 onMount(async () => {
 	await init();
@@ -34,6 +36,12 @@ onMount(async () => {
 	maticSpotPrice = response.data.items[0].quote_rate;
 	
 	loading = false;
+
+	contracts.museum.on('Borrow', async (from, value) => {
+		if (from == $wallet) {
+			await loadDebt();
+		}
+	});
 });
 
 async function loadDebt() {
@@ -129,78 +137,85 @@ function  BigNumFixed(value, n) {
 			
 		
 	</div>
-
 	<div class="flex flex-grow justify-center my-4">
-		<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-			Take a loan
-		</button>
-		<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-			Repay loan
-		</button>
-		<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-			Widthdraw collateral
-		</button>
-	</div>
-
-	<!-- 
-									 _                       
-									| |                      
-									| |     ___   __ _ _ __  
-									| |    / _ \ / _` | '_ \ 
-									| |___| (_) | (_| | | | |
-									|______\___/ \__,_|_| |_|
-
-	 -->
-	<div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">
-		<h1 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-300 to-green-600">
-			Take a loan! You can borrow up to 50% of your collateral!
-		</h1>
-
-		<div class="flex justify-center">
-			<p class="px-5 text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-				{borrowAmount ? BigNumFixed(borrowAmount,2) : '---'}
-				<span class="text-sm">
-					MATIC
-				</span>
-			</p>
-			<p class="px-5 dark:text-gray-100 text-4xl text-left font-bold my-4">
-				{borrowAmount ? BigNumMaticToUsd(borrowAmount) : '---'}
-				<span class="text-sm">
-					USD
-				</span>
-			</p>
-		</div>
-		<div class="flex text-gray-700 dark:text-gray-100 text-sm">
-			<div class="flex-1 ...">
-				Safer
-			</div>
-			<div class="flex-1 ...">
-				Riskier
-			</div>
-			</div>
-			
-		<input type="range" min="0" max="100" bind:value={pct} class="w-full" id="myinput">
-		<div class="py-3 flex justify-center ..." >
-
-			<button on:click={borrow} class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
-				class:disabled={borrowing}
-				class:cursor-wait={borrowing}>
-				{#if borrowing}
-				<!-- animation -->
-				<svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-					<path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
-					</path>
-				</svg>
-				Taking Loan...
-				{:else}
-				Take Loan
-				{/if}
+		{#each [
+			{val: 'take', text: 'Take a loan' },
+			{val: 'repay', text: 'Repay loan' },
+			{val: 'widthdraw', text: 'Widthdraw collateral' }
+		] as btn}
+			<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
+			class:bg-gray-100={select == btn.val}
+			class:shadow-lg={select == btn.val}
+			class:border-blue-200={select == btn.val}
+			on:click={() => select = btn.val}>
+				{btn.text}
 			</button>
-		</div>
-		<!-- Calculate health factor on the fly yo se que es asqueroso jaja -->
-		<p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {(Number(healthFactor.toFixed(2)) + (borrowAmount ? Number(borrowAmount.mul(10000).div(currentCollateral)) / 100 : 0)).toFixed(3)}%</p>
-
+		{/each}
 	</div>
+
+		{#if select == 'take'}
+		<TakeLoan {healthFactor} {currentCollateral} {currentDebt} />
+		
+		<!-- 
+										_                       
+										| |                      
+										| |     ___   __ _ _ __  
+										| |    / _ \ / _` | '_ \ 
+										| |___| (_) | (_| | | | |
+										|______\___/ \__,_|_| |_|
+
+		-->
+		<div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">
+			<h1 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-300 to-green-600">
+				Take a loan! You can borrow up to 50% of your collateral!
+			</h1>
+
+			<div class="flex justify-center">
+				<p class="px-5 text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
+					{borrowAmount ? BigNumFixed(borrowAmount,2) : '---'}
+					<span class="text-sm">
+						MATIC
+					</span>
+				</p>
+				<p class="px-5 dark:text-gray-100 text-4xl text-left font-bold my-4">
+					{borrowAmount ? BigNumMaticToUsd(borrowAmount) : '---'}
+					<span class="text-sm">
+						USD
+					</span>
+				</p>
+			</div>
+			<div class="flex text-gray-700 dark:text-gray-100 text-sm">
+				<div class="flex-1 ...">
+					Safer
+				</div>
+				<div class="flex-1 ...">
+					Riskier
+				</div>
+				</div>
+				
+			<input type="range" min="0" max="100" bind:value={pct} class="w-full" id="myinput">
+			<div class="py-3 flex justify-center ..." >
+
+				<button on:click={borrow} class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
+					class:disabled={borrowing}
+					class:cursor-wait={borrowing}>
+					{#if borrowing}
+					<!-- animation -->
+					<svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+						<path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+						</path>
+					</svg>
+					Taking Loan...
+					{:else}
+					Take Loan
+					{/if}
+				</button>
+			</div>
+			<!-- Calculate health factor on the fly yo se que es asqueroso jaja -->
+			<p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {(Number(healthFactor.toFixed(2)) + (borrowAmount ? Number(borrowAmount.mul(10000).div(currentCollateral)) / 100 : 0)).toFixed(3)}%</p>
+		</div>
+		{/if}
+		
 	{:else}
 	<h1 class="text-5xl text-gray-700 ">LOADING...</h1>
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
