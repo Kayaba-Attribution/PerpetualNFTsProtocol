@@ -226,7 +226,7 @@
     ],
     "name": "withdrawAAVE",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
