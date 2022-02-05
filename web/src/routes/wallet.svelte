@@ -1,11 +1,7 @@
-<script context="module">
-	export const prerender = true;
-</script>
-
 <script>
-	import { nfts, wallet, tokenApproved, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
+	import { nfts, wallet, tokenApproved, contracts, balance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
     let test;
     onMount(async ()=> {
         test = await contracts.museum.depositedNFTs($wallet,0);
@@ -13,16 +9,6 @@ import { onMount } from 'svelte';
 
     console.log(test)
 	
-	let minteando = false;
-	async function mint() {
-		try {
-			minteando = true;
-			const tx = await contracts.myToken.mint({value: parseEther('1')});
-			await tx.wait(1);
-		} catch (err) {}
-		minteando = false;
-	}
-
 	let wait = {};
 
 	let adding = false;
@@ -40,7 +26,7 @@ import { onMount } from 'svelte';
 		wait = {...wait};
 	}
 
-    let sellwait = {};
+  let sellwait = {};
 	let selling = false;
 	async function sell(nftId) {
 		try {
@@ -83,18 +69,18 @@ import { onMount } from 'svelte';
 
 
     <div class="container px-6 py-1 mx-auto">
-        <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Gallery</span></h1>
-        <h1 class="text-xl font-semibold text-gray-700 capitalize">Your gallery has {$balance} NFTs</h1>
+        <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Art</span></h1>
+        <h1 class="text-xl font-semibold text-gray-700 capitalize">Your own {$balance} NFTs</h1>
 
         
         <div class="grid grid-cols-3 gap-8 mt-8 xl:gap-16">
 
             <div class="flex flex-col items-center p-6 space-y-3 text-center bg-gray-100 rounded-xl dark:bg-gray-800">
 
-                <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">See/Sell your Art Pieces</h1>
+                <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">Donate your Art Pieces</h1>
 
                 <p class="text-gray-500 dark:text-gray-300">
-                    You can enjoy the view here, or sell your NFT at any time for 90% mint value
+                    You can enjoy the view here, or donate your NFT to the museum at any time for 90% mint value
                 </p>
                 {#if selling}
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="100px" height="60px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -118,7 +104,7 @@ import { onMount } from 'svelte';
                 <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">Add Collateral</h1>
 
                 <p class="text-gray-500 dark:text-gray-300">
-                    Add your Art as collateral to take out wMATIC loans, and sell your Art
+                    Leave your Art as collateral in the museum to take out wMATIC loans.
                 </p>
                 {#if adding}
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="100px" height="60px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -153,7 +139,7 @@ import { onMount } from 'svelte';
                             <button on:click={sell(nft)} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-purple-500 to-green-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
                                 class:disabled={adding}
                                 class:cursor-wait={adding}>
-                                Sell To Gallery
+                                Realese to Museum
                             </button>
                         </div>
 					{/if}
@@ -161,8 +147,6 @@ import { onMount } from 'svelte';
 			{/each}
 		</div>
 	</div>
-    
-    <h1>HOLA {$wallet}	</h1>
 {:else}
 	<img src="src/lib/images/connectWalletMeme.jpg" alt="connect wallet meme" />
 
