@@ -142,7 +142,7 @@ let maticSpotPrice;
 		{#each [
 			{val: 'take', text: 'Take a loan' },
 			{val: 'repay', text: 'Repay loan' },
-			{val: 'widthdraw', text: 'Widthdraw collateral' }
+			{val: 'withdraw', text: 'Widthdraw collateral' }
 		] as btn}
 			<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
 			class:bg-gray-100={select == btn.val}

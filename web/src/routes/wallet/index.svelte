@@ -1,13 +1,7 @@
 <script>
 	import { nfts, wallet, tokenApproved, contracts, balance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
-	import { onMount } from 'svelte';
-    let test;
-    onMount(async ()=> {
-        test = await contracts.museum.depositedNFTs($wallet,0);
-    }) 
-
-    console.log(test)
+	
 	
 	let wait = {};
 
@@ -59,7 +53,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>User personal art</title>
 </svelte:head>
 
 <section>

@@ -22,6 +22,7 @@ export const balanceETH = writable(0);
 
 
 export const nfts = writable([]);
+export const nftsInMuseum = writable([]);
 
 const ADDRESS = {
   museum: '0x8816a73899B87cFb6f57AB564d7eb44B5B137E98',
@@ -35,6 +36,8 @@ export function loginMetamask() {
   window.ethereum.enable();
   init();
 }
+
+let INIT = false;
 
 export async function init() {
   if (!provider) {
@@ -53,6 +56,12 @@ export async function init() {
       }, 0);
     });
   }
+
+  if (INIT) {
+    return;
+  }
+
+  INIT = true;
 
   const _networkDetails = await provider.getNetwork();
   // networkDetails.set(_networkDetails);
@@ -99,6 +108,13 @@ export async function init() {
     _promises.push(contracts.myToken.tokenOfOwnerByIndex(_wallet, String(i)));
   }
 
+  /*
+  contracts.museum.depositedNFTs(_wallet).then(nfts => {
+    console.log(nfts)
+    nftsInMuseum.set(nfts.map(nft => nft.toNumber()));
+  });
+  */
+
   let _nfts = await Promise.all(_promises);
   _nfts = _nfts.map(nft => nft.toNumber());
   nfts.set(_nfts);
@@ -114,8 +130,16 @@ export async function init() {
       nfts.set([..._nfts.filter(tokenId => Number(tokenId) !== Number(value))]);
       balance.set(await contracts.myToken.balanceOf(_wallet));
     }
-  });
 
+    if (from == _wallet && to == ADDRESS.museum) {
+      const _nfts = await get(nftsInMuseum);
+      _nfts.push(Number(value));
+      nftsInMuseum.set([..._nfts]);
+    }
+
+    // upgrade balance
+    balanceETH.set(await _signer.provider.getBalance(_wallet));
+  });
 
 }
 

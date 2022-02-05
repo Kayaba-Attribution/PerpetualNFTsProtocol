@@ -45,7 +45,7 @@ contract Museum is Ownable, IERC721Receiver {
     treasury = Treasury(_treasury);
   }
 
-  function depositedNFTs (address user, uint index) external view returns(uint[] memory) {
+  function depositedNFTs(address user) external view returns(uint[] memory) {
     return collateralNFT[user];   
   }
 
