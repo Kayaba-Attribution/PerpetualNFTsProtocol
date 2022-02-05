@@ -92,7 +92,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl text-gray-300 font-semibold  py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold  py-4">
 					Guaranteed Value
 				</h3>
 				<p class="text-md  text-gray-500 dark:text-gray-300 py-4">
@@ -108,7 +108,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl text-gray-300 font-semibold  py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold  py-4">
 					Earn
 				</h3>
 				<p class="text-md text-gray-500 dark:text-gray-300 py-4">
@@ -125,7 +125,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl text-gray-300 font-semibold  py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold py-4">
 					Loan
 				</h3>
 				<p class="text-md  text-gray-800 dark:text-gray-300 py-4">
@@ -187,7 +187,7 @@
 			
 			<div class="mt-8 xl:mt-12 lg:flex lg:items-center">
 				<div class="w-full lg:w-1/2 grid grid-cols-1 gap-8 xl:gap-16 md:grid-cols-2">
-					<div class="space-y-3">
+					<div class="space-y-3 shadow-lg rounded-lg px-3 py-2 bg-zinc-50">
 						<span class="inline-block p-3 text-blue-500 bg-blue-100 rounded-xl  dark:bg-blue-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -201,7 +201,7 @@
 						</p>
 					</div>
 
-					<div class="space-y-3">
+					<div class="space-y-3 shadow-lg rounded-lg px-3 py-2 bg-zinc-50">
 						<span class="inline-block p-3 text-blue-500 bg-blue-100 rounded-xl  dark:bg-blue-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
@@ -216,7 +216,7 @@
 						</p>
 					</div>
 
-					<div class="space-y-3">
+					<div class="space-y-3 shadow-lg rounded-lg px-3 py-2 bg-zinc-50">
 						<span class="inline-block p-3 text-blue-500 bg-blue-100 rounded-xl  dark:bg-blue-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
@@ -230,7 +230,7 @@
 						</p>
 					</div>
 
-					<div class="space-y-3">
+					<div class="space-y-3 shadow-lg rounded-lg px-3 py-2 bg-zinc-50">
 						<span class="inline-block p-3 text-blue-500 bg-blue-100 rounded-xl  dark:bg-blue-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
@@ -258,7 +258,7 @@
 	<div class="md:flex gap-8">
 
 		<div class="md:w-1/2 text-center mb-8 md:mb-0">
-			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="/images/person/6.jpg" alt="Avatar Jacky"/>
+			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="https://avatars.githubusercontent.com/u/332426" alt="Avatar Jacky"/>
 			<div class="bg-white shadow-lg rounded-lg px-8 pt-32 pb-10 text-gray-400">
 				<h3 class="font-title text-gray-800 text-xl mb-3">
 					0x4non
@@ -267,7 +267,7 @@
 					--
 				</p>
 				<p class="font-body text-sm mb-4">
-					He love caramel and he hate PHP
+					OG, he love caramel and he hate PHP
 				</p>
 				<a class="font-body text-blue-500 hover:text-gray-800" href="#">
 					0x4non
