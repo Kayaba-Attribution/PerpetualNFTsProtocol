@@ -7,8 +7,14 @@
 	export let value = 0;
 	export let maticSpotPrice = 0;
 
-	$: formattedMatic = Number(formatEther(value)).toFixed(3);
-	$: maticInUsd = (Number(formatEther(value)) * maticSpotPrice).toFixed(3);
+	const maticVal = tweened(Number(formatEther(value)), { duration: 500 });
+
+	$: if(value){ 
+		maticVal.set(Number(formatEther(value)));
+	}
+
+  
+
 
 </script>
 
@@ -27,12 +33,12 @@
 			<div class="flex flex-col justify-start">
 				<p class="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
 					{#if !maticSpotPrice}
-						{formattedMatic}
+						{$maticVal.toFixed(3)}
 						<span class="text-sm">
 							MATIC
 						</span>
 					{:else}
-						{maticInUsd}
+						{($maticVal * maticSpotPrice).toFixed(3)}
 						<span class="text-sm">
 							USD
 						</span>
@@ -41,7 +47,7 @@
 			</div>
 			<div class="flex items-center text-gray-700 dark:text-gray-100 text-sm">
 				<span>
-					{formattedMatic} MATIC
+					{$maticVal.toFixed(3)} MATIC
 				</span>
 			</div>
 		</div>
