@@ -14,7 +14,7 @@
 	let adding = false;
 	async function addCollateral(nftId) {
 		try {
-            adding = true;
+      adding = true;
 			const tx = await contracts.museum.deposit(String(nftId));
 			wait[nftId] = true;
 			wait = {...wait};
@@ -30,7 +30,7 @@
 	let selling = false;
 	async function sell(nftId) {
 		try {
-            selling = true;
+  		selling = true;
 			const tx = await contracts.museum.release(String(nftId));
 			sellwait[nftId] = true;
 			sellwait = {...sellwait};
@@ -38,7 +38,7 @@
 		} catch(err) {
 		}
 		sellwait[nftId] = false;
-        selling = false;
+		selling = false;
 		sellwait = {...sellwait};
 	}
 
@@ -65,8 +65,6 @@
 <section>
 
 {#if $wallet}
-
-
 
     <div class="container px-6 py-1 mx-auto">
         <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Art</span></h1>
@@ -128,20 +126,20 @@
 						class:cursor-wait={wait.approve}
 						on:click={()=> approve()}>Approve Museum</button>
 					{:else}
-                        <div class="py-3 flex justify-center ..." >
-                            <button on:click={addCollateral(nft)} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-cyan-500 to-purple-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
-                                class:disabled={adding}
-                                class:cursor-wait={adding}>
-                                Add as Collateral
-                            </button>
-                        </div>
-                        <div class="flex justify-center ..." >
-                            <button on:click={sell(nft)} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-purple-500 to-green-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
-                                class:disabled={adding}
-                                class:cursor-wait={adding}>
-                                Realese to Museum
-                            </button>
-                        </div>
+						<div class="py-3 flex justify-center ..." >
+								<button on:click={addCollateral(nft)} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-cyan-500 to-purple-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
+										class:disabled={adding}
+										class:cursor-wait={adding}>
+										Add as Collateral
+								</button>
+						</div>
+						<div class="flex justify-center ..." >
+								<button on:click={sell(nft)} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-purple-500 to-green-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
+										class:disabled={adding}
+										class:cursor-wait={adding}>
+										Realese to Museum
+								</button>
+						</div>
 					{/if}
 				</div>
 			{/each}
