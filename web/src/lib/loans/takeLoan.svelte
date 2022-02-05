@@ -5,6 +5,7 @@ import { contracts, init, wallet } from '$lib/eth.js';
 export let healthFactor;
 export let currentDebt;
 export let currentCollateral;
+export let maticSpotPrice;
 
 let pct = 0;
 let maxBorrow;
@@ -49,7 +50,7 @@ $: maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
       </span>
     </p>
     <p class="px-5 dark:text-gray-100 text-4xl text-left font-bold my-4">
-      {borrowAmount ? BigNumMaticToUsd(borrowAmount) : '---'}
+      {borrowAmount ? (maticSpotPrice * Number(formatEther(borrowAmount))).toFixed(3) : '---'}
       <span class="text-sm">
         USD
       </span>
