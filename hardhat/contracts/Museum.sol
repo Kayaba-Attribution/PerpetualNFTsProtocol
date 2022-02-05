@@ -114,18 +114,18 @@ contract Museum is Ownable, IERC721Receiver {
 
   function repay() external payable updateDebt{
     if(borrowed[msg.sender] < msg.value) {
-      emit Repay(msg.sender, borrowed[msg.sender]);
       uint256 _changeBack = msg.value - borrowed[msg.sender];
-      //borrowed[msg.sender] = 0;
-      // devuelve el dinero
-      Address.sendValue(payable(msg.sender), _changeBack);
-
+      
       // AAVE changes
       // manda el dinero
       treasury.depositAAVE{value: borrowed[msg.sender]}();
+      
       // borra la deuda
       borrowed[msg.sender] = 0;
-
+      
+      // devuelve el dinero
+      Address.sendValue(payable(msg.sender), _changeBack);
+      emit Repay(msg.sender, borrowed[msg.sender]);
     } else {
       borrowed[msg.sender] -= msg.value;
 
@@ -169,11 +169,11 @@ contract Museum is Ownable, IERC721Receiver {
   }
 
   // devuelve el healthFacto del usuario (0 -> 10000):(0 -> 100%)
-  function healthFactor(address user) public returns(uint256) {
-    if(totalDebt(msg.sender) == 0) {
+  function healthFactor(address user) public view returns(uint256) {
+    if(totalDebt(user) == 0) {
       return 0;
     }
-    if(collateralAmount[msg.sender] == 0) {
+    if(collateralAmount[user] == 0) {
       return 10000;
     }
     
