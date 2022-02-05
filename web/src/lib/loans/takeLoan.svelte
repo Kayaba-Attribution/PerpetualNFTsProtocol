@@ -39,7 +39,7 @@ $: maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
 </script>
 <div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">
   <h1 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-300 to-green-600">
-    Take a loan! You can borrow up to 50% of your collateral!
+    Take a loan! You can borrow up to 50% of your collateral! (INTEREST RATE: 10% YEARLY)
   </h1>
 
   <div class="flex justify-center">

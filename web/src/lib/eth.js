@@ -17,6 +17,9 @@ export const wallet = writable('');
 export const balance = writable(0);
 export const wrongNetwork = writable(true);
 export const tokenApproved = writable(false);
+export const signer = writable();
+export const balanceETH = writable(0);
+
 
 export const nfts = writable([]);
 
@@ -70,7 +73,7 @@ export async function init() {
     // probably not log in with metamask
     return;
   }
-  // signer.set(_signer);
+  signer.set(_signer);
 
   contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
   contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
@@ -83,6 +86,9 @@ export async function init() {
       tokenApproved.set(approved);
     }
   });
+
+  balanceETH.set(await _signer.provider.getBalance(_wallet));
+
 
   const _balance = await contracts.myToken.balanceOf(_wallet);
   balance.set(_balance);

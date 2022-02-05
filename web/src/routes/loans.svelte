@@ -28,6 +28,12 @@ $: if(pct) {
 
 let select = 'take';
 
+async function reloadDebt(from, value) {
+	if (from == $wallet) {
+		await loadDebt();
+	}
+}
+
 onMount(async () => {
 	await init();
 	
@@ -39,11 +45,13 @@ onMount(async () => {
 	
 	loading = false;
 
-	contracts.museum.on('Borrow', async (from, value) => {
-		if (from == $wallet) {
-			await loadDebt();
-		}
-	});
+	contracts.museum.on('Borrow', reloadDebt);
+	contracts.museum.on('Repay', reloadDebt);
+
+	return () => {
+		contracts.museum.off('Borrow', reloadDebt);
+		contracts.museum.off('Repay', reloadDebt);
+	};
 });
 
 async function loadDebt() {
@@ -77,7 +85,7 @@ let maticSpotPrice;
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Loans</title>
 </svelte:head>
 
 <div class="content">
@@ -90,7 +98,7 @@ let maticSpotPrice;
 					Liquidation Warning!
 				</p>
 				<p>
-					Your Health Factor is Over 50%
+					Your Health Factor is {healthFactor}%!
 				</p>
 			</div>
 		{/if}
