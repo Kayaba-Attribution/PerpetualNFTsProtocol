@@ -133,6 +133,12 @@ function  BigNumFixed(value, n) {
 		
 	</div>
 
+	<div class="flex flex-grow justify-center my-4">
+		<button class="rounded border bg-white mx-2 px-4 py-2">Take a loan</button>
+		<button class="rounded border bg-white mx-2 px-4 py-2">Repay loan</button>
+		<button class="rounded border bg-white mx-2 px-4 py-2">Widthdraw collateral</button>
+	</div>
+
 	<!-- 
 									 _                       
 									| |                      
