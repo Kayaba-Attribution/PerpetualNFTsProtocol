@@ -12,7 +12,7 @@ const defaultConfig = {
     adapter: adapterAuto(),
 
     // hydrate the <div id="svelte"> element in src/app.html
-    target: "#svelte",
+    //target: "#svelte",
 
     // Override http methods in the Todo forms
     methodOverride: {
