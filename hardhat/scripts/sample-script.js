@@ -40,7 +40,7 @@ async function main() {
   console.log({
     museum: museum.address,
     treasury: treasury.address,
-    myToken: myToken.address,
+    perpetual: myToken.address,
   });
 
  // process.env.wallet

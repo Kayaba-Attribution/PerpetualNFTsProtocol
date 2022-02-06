@@ -1,8 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 
-// import abiMuseum from "./abi/contracts/Museum.sol/Museum.json";
-
 import abiMuseum from "./abi/Museum.json";
 import abiNFT from "./abi/Perpetual.json";
 
