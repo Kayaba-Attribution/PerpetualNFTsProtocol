@@ -8,18 +8,11 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Interfaces.sol";
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-interface IMATIC is IERC20{
-=======
 interface IWMATIC is IERC20{
->>>>>>> refactor nombre de interfaz
   function deposit() external payable;
 
   function withdraw(uint256) external;
 }
-=======
->>>>>>> Interfaces CleanUp and Basic AAVE interest quote in test/info.test.js
 
 contract Treasury is Ownable {
   IWETHGateway WETHGateway;
