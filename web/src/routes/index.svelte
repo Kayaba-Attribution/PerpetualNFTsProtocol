@@ -1,7 +1,7 @@
 <script>
 	import { wallet, wrongNetwork, pickNetwork, contracts, balance, museumBalance, totalSupply } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
-
+	import { base } from '$app/paths';
 
 	let minteando = false;
 	async function mint() {
@@ -280,7 +280,7 @@
 	{/if}
 
 {:else}
-	<img src="/connectWalletMeme.jpg" alt="connect wallet meme" />
+	<img src="{base}/connectWalletMeme.jpg" alt="connect wallet meme" />
 
 	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}

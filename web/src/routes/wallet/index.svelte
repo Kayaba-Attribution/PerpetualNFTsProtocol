@@ -1,6 +1,7 @@
 <script>
 	import { nfts, wallet, tokenApproved, contracts, balance, museumBalance, loginMetamask } from '$lib/eth.js';
 	import { fade } from 'svelte/transition';
+	import { base } from '$app/paths';
 	
 	
 	let wait = {};
@@ -64,11 +65,11 @@
         <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Art</span></h1>
 				<h1 class="text-xl font-semibold text-gray-700 capitalize">
 					{#if Number($balance) > 0 && Number($museumBalance) > 0}
-						<em> You have {$balance} Perpetuals in your wallet and {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+						<em> You have {$balance} Perpetuals in your wallet and {$museumBalance} Perpetuals in the <a href="{base}/museum">Museum</a></em>  
 					{:else if Number($balance) > 0}
 						<em> You have {$balance} Perpetuals</em>  
 					{:else if Number($museumBalance) > 0}
-						<em> You have {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+						<em> You have {$museumBalance} Perpetuals in the <a href="{base}/museum">Museum</a></em>  
 					{/if}
 				</h1>
 				<!-- <h1 class="text-xl font-semibold text-gray-700 capitalize">Your own {$balance} NFTs</h1> -->
@@ -124,7 +125,7 @@
 			{#each $nfts as nft}
 				<div class="w-1/3 p-10 text-center" transition:fade|local>
             <h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft}</h1>
-						<img src="/tokens/{nft}.jpeg" class="rounded" alt="Perpetual #{nft}" />
+						<img src="{base}/tokens/{nft}.jpeg" class="rounded" alt="Perpetual #{nft}" />
 					{#if !$tokenApproved}
 						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
 						class:cursor-wait={wait.approve}
@@ -150,7 +151,7 @@
 		</div>
 	</div>
 {:else}
-	<img class="cursor-pointer" src="/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
+	<img class="cursor-pointer" src="{base}/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
 
 	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}

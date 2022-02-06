@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 
 	import { wallet, wrongNetwork, loginMetamask, pickNetwork } from '$lib/eth.js';
 
@@ -15,15 +16,15 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-			<li class:active={$page.url.pathname === '/wallet'}>
-				<a sveltekit:prefetch href="/wallet">MY Gallery</a>
+			<li class:active={$page.url.pathname === base+'/'}><a sveltekit:prefetch href="{base}/">Home</a></li>
+			<li class:active={$page.url.pathname === base+'/wallet'}>
+				<a sveltekit:prefetch href="{base}/wallet">MY Gallery</a>
 			</li>
-			<li class:active={$page.url.pathname === '/museum'}>
-				<a sveltekit:prefetch href="/museum">Museum</a>
+			<li class:active={$page.url.pathname === base+'/museum'}>
+				<a sveltekit:prefetch href="{base}/museum">Museum</a>
 			</li>
-			<li class:active={$page.url.pathname === '/loans'}>
-				<a sveltekit:prefetch href="/loans">Loans</a>
+			<li class:active={$page.url.pathname === base+'/loans'}>
+				<a sveltekit:prefetch href="{base}/loans">Loans</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -44,7 +45,7 @@
 				<div class="w-[153px] relative">
 					<div class="absolute z-50 flex flex-col items-center shadow-button">
 						<button class="flex items-center px-4 h-12 bg-white rounded">
-							<div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-green-500 mr-3"></div>
+							<div class="rounded-full w-[6px] h-[6px] bg-green-500 mr-3"></div>
 							<div>{$wallet.slice(0, 6)}...{$wallet.slice(-6)}</div>
 							<!-- <span class="ml-1 text-gray-700 text-sm">▼</span> -->
 						</button>
@@ -53,7 +54,6 @@
 			{:else}
 				<button on:click={loginMetamask} class="flex items-center px-4 h-12 bg-white rounded shadow-button space-x-3"><div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-red-500"></div><div>Connect Wallet</div></button>
 			{/if}
-			<!-- <a href="/exhibitions" class="flex items-center justify-center pl-2 pr-2 h-12 hover:text-white whitespace-nowrap text-sm hover:bg-link bg-white border-2 border-button-border hover:border-link rounded shadow-button transition-all duration-300 md:text-base lg:pl-5 lg:pr-5">Exhibitions</a> -->
 			</div>
 	</div>
 
