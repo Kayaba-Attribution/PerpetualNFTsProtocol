@@ -3,9 +3,7 @@
 
 import { onMount } from 'svelte';
 
-
-import { formatEther } from '@ethersproject/units';
-import { contracts, init, wallet } from '$lib/eth.js';
+import { contracts, metamaskReady, wallet } from '$lib/eth.js';
 import InfoSquare from '$lib/loans/infoSquare.svelte';
 import TakeLoan from '$lib/loans/takeLoan.svelte';
 import RepayLoan from '$lib/loans/repayLoan.svelte';
@@ -17,14 +15,6 @@ let currentDebt;
 let currentCollateral;
 let healthFactor;
 let maxBorrow;
-let pct = 0;
-
-let borrowAmount;
-$: if(pct) {
-	borrowAmount = maxBorrow.div(100).mul(Math.round(pct));
-} else {
-	borrowAmount = 0;
-}
 
 let select = 'take';
 
@@ -35,10 +25,10 @@ async function reloadDebt(from, value) {
 }
 
 onMount(async () => {
-	await init();
-	
-	await loadDebt();
+	await $metamaskReady;
 
+	await loadDebt();
+	
 	let response = await fetch('https://api.covalenthq.com/v1/pricing/tickers/?quote-currency=USD&format=JSON&tickers=matic&key=ckey_814a704909fe46aca8efc7cb84b');
 	response = await response.json();
 	maticSpotPrice = response.data.items[0].quote_rate;
@@ -62,21 +52,6 @@ async function loadDebt() {
 
 	maxBorrow = currentCollateral.div(2).sub(currentDebt);
 	maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
-}
-
-
-let borrowing = false;
-async function borrow() {
-	try {
-		borrowing = true;
-		const tx = await contracts.museum.borrow(borrowAmount);
-		await tx.wait(1);
-		pct = 0;
-		await loadDebt();
-	} catch (err) {
-		console.log(err);
-	}
-	borrowing = false;
 }
 
 let maticSpotPrice;
@@ -141,29 +116,32 @@ let maticSpotPrice;
 			
 		
 	</div>
-	<div class="flex flex-grow justify-center my-4">
-		{#each [
-			{val: 'take', text: 'Take a loan' },
-			{val: 'repay', text: 'Repay loan' },
-			{val: 'withdraw', text: 'Widthdraw collateral' }
-		] as btn}
-			<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
-			class:bg-gray-100={select == btn.val}
-			class:shadow-lg={select == btn.val}
-			class:border-blue-200={select == btn.val}
-			on:click={() => select = btn.val}>
-				{btn.text}
-			</button>
-		{/each}
-	</div>
-		{#if select == 'take'}
-			<TakeLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
-		{:else if select == 'repay'}
-			<RepayLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
-		{:else if select == 'withdraw'}
-			<WithdrawCollateral {healthFactor} {currentCollateral} {currentDebt} />
+		{#if currentCollateral.gt(0)}
+		<div class="flex flex-grow justify-center my-4">
+			{#each [
+				{val: 'take', text: 'Take a loan' },
+				{val: 'repay', text: 'Repay loan' },
+				{val: 'withdraw', text: 'Widthdraw collateral' }
+			] as btn}
+				<button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:shadow-lg rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
+				class:bg-gray-100={select == btn.val}
+				class:shadow-lg={select == btn.val}
+				class:border-blue-200={select == btn.val}
+				on:click={() => select = btn.val}>
+					{btn.text}
+				</button>
+			{/each}
+		</div>
+			{#if select == 'take'}
+				<TakeLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
+			{:else if select == 'repay'}
+				<RepayLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
+			{:else if select == 'withdraw'}
+				<WithdrawCollateral {healthFactor} {currentCollateral} {currentDebt} />
+			{/if}
+		{:else}
+			<h1 class="my-8">Please deposit a Perpetual as collateral to take loans.</h1>
 		{/if}
-		
 	{:else}
 	<h1 class="text-5xl text-gray-700 ">LOADING...</h1>
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

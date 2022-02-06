@@ -1,8 +1,6 @@
 <script>
 import { parseEther, formatEther } from '@ethersproject/units';
-import { contracts, balanceETH, signer, init, wallet } from '$lib/eth.js';
-
-import { onMount } from 'svelte';
+import { contracts } from '$lib/eth.js';
 
 export let healthFactor;
 export let currentDebt;
@@ -33,7 +31,7 @@ async function repay() {
 	repaying = false;
 }
 
-$: newHealthFactor = Number(healthFactor.toFixed(2)) - (repayAmount ? Number(repayAmount.mul(10000).div(currentCollateral)) / 100 : 0);
+$: newHealthFactor = currentCollateral.gt(0) ? Number(healthFactor.toFixed(2)) - (repayAmount ? Number(repayAmount.mul(10000).div(currentCollateral)) / 100 : 0) : '0';
 
 </script>
 <div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">

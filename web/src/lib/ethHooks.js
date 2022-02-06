@@ -37,8 +37,11 @@ async function transferHook(from, to, value) {
   balanceETH.set(await _signer.provider.getBalance(_wallet));
 }
 
+let hooksLoaded = false;
 
 export default function loadHooks() {
+  if(hooksLoaded) return;
+  hooksLoaded = true;
   contracts.myToken.off("ApprovalForAll");
   contracts.myToken.on("ApprovalForAll", approvalHook);
 

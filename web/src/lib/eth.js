@@ -31,11 +31,26 @@ export const balanceETH = writable(0);
 export const nfts = writable([]);
 export const nftsInMuseum = writable([]);
 
-export const ADDRESS = {
-  museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
-  treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
-  myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
-}
+const NET_ADDRESS = {
+  80001: {
+    museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
+    treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
+    myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
+  },
+  31337: {  
+    museum: '0xf219d840AA063d406Ecbcb5A6f0173CD8Dc9553f',
+    treasury: '0x88876ccD4DC83c990aC59B3106E313562c8bc747',
+    myToken: '0x6f53118cdAC5726b1B4671c3F4fae024163eD042'
+  }
+};
+
+export const ADDRESS = NET_ADDRESS[CHAIN_ID];
+
+let _metamaskReady = () => {};
+
+export const metamaskReady = writable(new Promise((resolve) => {
+  _metamaskReady = resolve;
+}));
 
 // testnet
 // {
@@ -55,6 +70,8 @@ function reset() {
 
   nfts.set([]);
   nftsInMuseum.set([]);
+
+  metamaskReady.set(new Promise((resolve) => { _metamaskReady = resolve; }));
 
 }
 
@@ -132,6 +149,7 @@ export async function init() {
   nfts.set(_nfts);
 
   loadHooks();
+  _metamaskReady();
 }
 
 

@@ -1,15 +1,15 @@
 <script>
-
+import { fade } from 'svelte/transition';
 import { onMount } from 'svelte';
 
-import { contracts, init, wallet } from '$lib/eth.js';
+import { contracts, metamaskReady } from '$lib/eth.js';
 
 let nftsGetLoading = true;
 
 let museumNfts = [];
 
 onMount(async () => {
-	await init();
+	await $metamaskReady;
 	const _balance = await contracts.myToken.balanceOf(contracts.museum.address);
   
   const _promises = [];
@@ -53,7 +53,7 @@ onMount(async () => {
 		<div class="flex w-full">
 			<div class="flex w-full">
 				{#each museumNfts as nft}
-					<div class="w-1/3 p-10 text-center ">
+					<div class="w-1/3 p-10 text-center" transition:fade>
 						<h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft.tokenId}</h1>
 						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" alt="Perpetual #{nft.tokenId}" />
 						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId} lend by {nft.owner.slice(0,4)}...{nft.owner.slice(-4)}</h2>

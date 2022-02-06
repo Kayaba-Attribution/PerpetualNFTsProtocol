@@ -13,33 +13,6 @@
 		minteando = false;
 	}
 
-	let wait = {};
-
-	async function addCollateral(nftId) {
-		try {
-			const tx = await contracts.museum.deposit(String(nftId));
-			wait[nftId] = true;
-			wait = {...wait};
-			await tx.wait();
-		} catch(err) {
-		}
-		wait[nftId] = false;
-		wait = {...wait};
-	}
-
-	async function approve() {
-		try {
-			const tx = await contracts.myToken.setApprovalForAll(contracts.museum.address, true);
-			
-			wait.approve = true;
-			wait = {...wait};
-			await tx.wait();
-		} catch(err) {
-			console.log(err)
-		}
-		wait.approve = false;
-		wait = {...wait};
-	}
 
 </script>
 
