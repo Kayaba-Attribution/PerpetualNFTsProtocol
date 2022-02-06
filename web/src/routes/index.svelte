@@ -1,9 +1,5 @@
-<script context="module">
-	export const prerender = true;
-</script>
-
 <script>
-	import { nfts, wallet, tokenApproved, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
+	import { wallet, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
 
 
