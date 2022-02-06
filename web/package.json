@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build-pages": "GHPAGES=1 svelte-kit build",
+    "build-pages": "GHPAGES=1 svelte-kit build && cp -R docs/* ../docs/",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
