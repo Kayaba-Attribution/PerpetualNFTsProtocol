@@ -25,7 +25,6 @@ async function transferHook(from, to, value) {
 
   if (from == _wallet && to == ADDRESS.museum) {
     const _nfts = await get(nftsInMuseum);
-    console.log('agregando nft', Number(value));
     _nfts.push(Number(value));
     nftsInMuseum.set([..._nfts]);
     const _museumBalance = await get(museumBalance);
@@ -49,7 +48,14 @@ async function transferHook(from, to, value) {
   const _signer = await get(signer);
   // upgrade balance
   balanceETH.set(await _signer.provider.getBalance(_wallet));
+}
 
+async function releaseHook(from, tokenId) {
+  const _wallet = get(wallet);
+  const _museumBalance = await get(museumBalance);
+  if (from === _wallet) {
+    museumBalance.set(Number(_museumBalance) - 1);
+  }
 }
 
 let hooksLoaded = false;
@@ -62,4 +68,7 @@ export default function loadHooks() {
 
   contracts.perpetual.off("Transfer");
   contracts.perpetual.on("Transfer", transferHook);
+
+  contracts.museum.off("Release");
+  contracts.museum.on("Release", releaseHook);
 }
