@@ -1,5 +1,5 @@
 <script>
-	import { nfts, wallet, tokenApproved, contracts, balance } from '$lib/eth.js';
+	import { nfts, wallet, tokenApproved, contracts, balance, loginMetamask } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
 	
 	
@@ -113,8 +113,8 @@
 		<div class="flex w-full">
 			{#each $nfts as nft}
 				<div class="w-1/3 p-10 text-center ">
-                    <h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft}</h1>
-					<img src="/tokens/{nft}.jpeg" class="rounded" />
+            <h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft}</h1>
+						<img src="/tokens/{nft}.jpeg" class="rounded" />
 					{#if !$tokenApproved}
 						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
 						class:cursor-wait={wait.approve}
@@ -140,7 +140,7 @@
 		</div>
 	</div>
 {:else}
-	<img src="src/lib/images/connectWalletMeme.jpg" alt="connect wallet meme" />
+	<img class="cursor-pointer" src="src/lib/images/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
 
 	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}

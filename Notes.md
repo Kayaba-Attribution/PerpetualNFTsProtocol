@@ -162,3 +162,27 @@ LendingPool Docs: https://docs.aave.com/developers/v/2.0/the-core-protocol/lendi
 
 
 
++ nfts images
++ logo how to
++ divide in 4 TF, aleatory 10,000
+
++ not enought
++ Guaranteed Value
++  interesting 
++ protocol
+
++ diferent, we deposit into AAVE kept money in the network
++ personal gallery
++ donate the museum , and keeps in the museum
+
++ take loans over NFTs
++ add it as collateral
+
++ using Covalint API
++ NFTs == 1 MATIC, 
++ while health factor <50%> take monay else unquie liquidtion system  
++ in fact >60% y la paersonlae que liquida se lleva una parte y  without paying ETH 0.1, y pasa a 
+
++ 2 0.5 eth
+
+

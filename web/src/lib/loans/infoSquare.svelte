@@ -9,6 +9,8 @@
 
 	const maticVal = tweened(Number(formatEther(value)), { duration: 500 });
 
+	console.log(title ,formatEther(value))
+
 	$: if(value){ 
 		maticVal.set(Number(formatEther(value)));
 	}

@@ -57,7 +57,7 @@ onMount(async () => {
 async function loadDebt() {
 	currentDebt = await contracts.museum.totalDebt($wallet);
 	currentCollateral = await contracts.museum.collateralAmount($wallet);
-
+	
 	healthFactor = currentDebt.gt(0) ? Number(currentDebt.mul(10000).div(currentCollateral)) / 100 : 0;
 
 	maxBorrow = currentCollateral.div(2).sub(currentDebt);
@@ -89,7 +89,10 @@ let maticSpotPrice;
 </svelte:head>
 
 <div class="content">
-	<h1>Dashboard</h1>
+	<div class="flex ">
+		<h1 class="flex-grow text-left">Dashboard</h1>
+		<span class="text-md pt-5">Current Health Factor: {healthFactor}%</span>
+	</div>
 
 	{#if !loading}
 		{#if healthFactor > 50}
@@ -153,13 +156,12 @@ let maticSpotPrice;
 			</button>
 		{/each}
 	</div>
-
 		{#if select == 'take'}
 			<TakeLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
 		{:else if select == 'repay'}
 			<RepayLoan {healthFactor} {currentCollateral} {currentDebt} {maticSpotPrice} />
 		{:else if select == 'withdraw'}
-			<WithdrawCollateral />
+			<WithdrawCollateral {healthFactor} {currentCollateral} {currentDebt} />
 		{/if}
 		
 	{:else}

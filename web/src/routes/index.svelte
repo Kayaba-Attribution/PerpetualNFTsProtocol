@@ -6,8 +6,7 @@
 	import { nfts, wallet, tokenApproved, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
 
-	import meme from '../lib/images/connectWalletMeme.jpg'
-	
+
 	let minteando = false;
 	async function mint() {
 		try {
@@ -92,7 +91,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl font-semibold  py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold dark:text-gray-100 py-4">
 					Guaranteed Value
 				</h3>
 				<p class="text-md  text-gray-500 dark:text-gray-300 py-4">
@@ -108,7 +107,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl font-semibold  py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold dark:text-gray-100 py-4">
 					Earn
 				</h3>
 				<p class="text-md text-gray-500 dark:text-gray-300 py-4">
@@ -125,7 +124,7 @@
 						</svg>
 					</div>
 				</div>
-				<h3 class="text-2xl sm:text-xl font-semibold py-4">
+				<h3 class="text-2xl sm:text-xl font-semibold dark:text-gray-100 py-4">
 					Loan
 				</h3>
 				<p class="text-md  text-gray-800 dark:text-gray-300 py-4">
@@ -264,7 +263,7 @@
 					0x4non
 				</h3>
 				<p class="font-body">
-					--
+					Founder
 				</p>
 				<p class="font-body text-sm mb-4">
 					OG, he love caramel and he hate PHP
@@ -276,13 +275,13 @@
 		</div>
 		<div class="md:w-1/2 text-center">
 
-			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="src/lib/images/progilegif.gif" alt="Avatar Damien Marley"/>
+			<img class="w-48 h-48 rounded-full mx-auto -mb-24" src="https://avatars.githubusercontent.com/u/63566185" alt="Avatar Damien Marley"/>
 			<div class="bg-white shadow-lg rounded-lg px-8 pt-32 pb-10 text-gray-400">
 				<h3 class="font-title text-gray-800 text-xl mb-3">
 					Kayaba_Attribution
 				</h3>
 				<p class="font-body">
-					--
+					Co-Founder
 				</p>
 				<p class="font-body text-sm mb-4">
 					He&#x27;s fun and listen everyday Bob Marley
@@ -299,26 +298,9 @@
 		estas en al red equivocada
 		<button on:click={() => pickNetwork()}>CHANGE TO HARDHAT</button>
 	{/if}
-	<div class="flex w-full">
-		<div class="flex w-full">
-			{#each $nfts as nft}
-				<div class="w-1/3 p-10 text-center">
-					<img src="/tokens/{nft}.jpeg" class="rounded" />
-					{#if !$tokenApproved}
-						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
-						class:cursor-wait={wait.approve}
-						on:click={()=> approve()}>Approve Museum</button>
-					{:else}
-						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
-						class:cursor-wait={wait[nft]}
-						on:click={()=> addCollateral(nft)}>add as colateral</button>
-					{/if}
-				</div>
-			{/each}
-		</div>
-	</div>
+
 {:else}
-	<img src="src/lib/images/connectWalletMeme.jpg" alt="connect wallet meme" />
+	<img src="/connectWalletMeme.jpg" alt="connect wallet meme" />
 
 	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}

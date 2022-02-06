@@ -21,12 +21,16 @@ contract Museum is Ownable, IERC721Receiver {
 
   // Save User NFT _id
   mapping(uint256 => address) public collateralNFTOwner;
-  mapping(address => uint256[]) public collateralNFT;
+  mapping(address => mapping(uint256 => uint256)) public collateralNFT;
+  // total de nfts depositados por el usuario
+  mapping(address => uint256) public totalNFTS;
 
   mapping(address => uint256) public borrowed;
   mapping(address => uint256) public borrowedTime;
 
   event Deposit(address owner, uint256 tokenId);
+  event Withdraw(address owner, uint256 tokenId);
+  event Release(address owner, uint256 tokenId);
   event Borrow(address owner, uint256 amount);
   event Repay(address owner, uint256 amount);
   event Liquidate(address owner, address liquidator, uint256 tokenid);
@@ -45,16 +49,26 @@ contract Museum is Ownable, IERC721Receiver {
     treasury = Treasury(_treasury);
   }
 
-  function depositedNFTs(address user) external view returns(uint[] memory) {
-    return collateralNFT[user];   
+  function depositedNFTs(address user) external view returns(uint256[] memory) {
+    uint256[] memory nfts = new uint256[](totalNFTS[user]);
+
+    for (uint256 i=0; i < totalNFTS[user]; i++) {
+      nfts[i] = collateralNFT[user][i];
+    }
+    return nfts;
+    
+
+    //return collateralNFT[user];
   }
 
   function deposit(uint256 _id) external {
     nftToken.transferFrom(msg.sender, address(this), _id);
+    collateralNFT[msg.sender][totalNFTS[msg.sender]] = _id;
+    totalNFTS[msg.sender] += 1;
 
-    collateralAmount[msg.sender] += nftToken.nftValue();
+    collateralAmount[msg.sender] += nftToken.nftValue(_id);
     collateralNFTOwner[_id] = msg.sender;
-    collateralNFT[msg.sender].push(_id);
+    
     
     emit Deposit(msg.sender, _id);
   }
@@ -82,11 +96,10 @@ contract Museum is Ownable, IERC721Receiver {
   function liquidate(address user) external {
     require(healthFactor(user) < 6000, "user is safe");
 
-    for(uint i = 0; i < collateralNFT[user].length; i++) {
+    for(uint i = 0; i < totalNFTS[user]; i++) {
       emit Liquidate(user, msg.sender, collateralNFT[user][i]);
-      delete collateralNFTOwner[collateralNFT[user][i]];
+      nftEnumRemove(msg.sender, collateralNFT[user][i]);
     }
-    delete collateralNFT[user];
     delete collateralAmount[msg.sender];
     
     delete borrowed[user];
@@ -99,20 +112,18 @@ contract Museum is Ownable, IERC721Receiver {
     treasury.withdrawAAVE(msg.sender, 0.1 ether);
   }
 
-  function borrow(uint256 amount, uint8 asset) external updateDebt {
+  function borrow(uint256 amount, bool wMATIC) external updateDebt {
 
     require(amount <= maxBorrow(msg.sender), "You cant borrow more than");
 
     borrowed[msg.sender] += amount;
 
-    if(asset == 0){
-      treasury.withdrawAAVE(msg.sender, amount);
-    }else if(asset == 1){
+    // usamos treasury.borrowAAVE(msg.sender, amount); ??
+    if(wMATIC){
       treasury.withdrawAAVEwMATIC(msg.sender, amount);
-    }else{
-      require(asset <= 1, "Borrow Asset Not Supported" );
+    } else {
+      treasury.withdrawAAVE(msg.sender, amount);
     }
-    // treasury.borrowAAVE(msg.sender, amount);
 
     emit Borrow(msg.sender, amount);
   }
@@ -152,26 +163,21 @@ contract Museum is Ownable, IERC721Receiver {
   function withdraw(uint256 _id) external {
     require(collateralNFTOwner[_id] == msg.sender, "you are not the owner");
 
-    collateralAmount[msg.sender] -= nftToken.nftValue();
+    collateralAmount[msg.sender] -= nftToken.nftValue(_id);
     require(healthFactor(msg.sender) < 6000, "unsafe collateral ratio");
+
     delete collateralNFTOwner[_id];
-    
     nftEnumRemove(msg.sender, _id);
     
     nftToken.transferFrom(address(this), msg.sender, _id);
+    emit Withdraw(msg.sender, _id);
   }
 
 
-  function release(uint256 _id) external updateDebt {
-    require(collateralNFTOwner[_id] == msg.sender, "you are not the owner");
-
-    collateralAmount[msg.sender] -= nftToken.nftValue();
-    require(healthFactor(msg.sender) < 6000, "unsafe collateral ratio");
-    nftEnumRemove(msg.sender, _id);
-
-    delete collateralNFTOwner[_id];
-    
-    treasury.release(msg.sender, nftToken.nftValue());
+  function release(uint256 _id) external {
+    nftToken.transferFrom(msg.sender, address(this), _id);
+    treasury.release(msg.sender, nftToken.nftValue(_id));   
+    emit Release(msg.sender, _id);
   }
 
   // devuelve el healthFacto del usuario (0 -> 10000):(0 -> 100%)
@@ -183,22 +189,18 @@ contract Museum is Ownable, IERC721Receiver {
       return 10000;
     }
     
-
     return totalDebt(msg.sender) * 10000 / collateralAmount[msg.sender];
   }
 
   function nftEnumRemove(address user, uint256 _id) internal {
-    uint256[] memory _nfts;
-
-    //uint256 j = 0;
-
-    for (uint i = 0; i < collateralNFT[user].length; i+=1) {
-      if (collateralNFT[user][i] != _id) {
-        _nfts[_nfts.length] = _id;
-        //j+=1;
+    totalNFTS[msg.sender] -= 1;
+    for(uint256 i = 0; i < totalNFTS[msg.sender]; i++) {
+      if(collateralNFT[msg.sender][i] == _id) {
+        collateralNFT[msg.sender][i] = collateralNFT[msg.sender][totalNFTS[msg.sender]];
+        break;
       }
     }
-    collateralNFT[user] = _nfts;
+    delete collateralNFT[msg.sender][totalNFTS[msg.sender]];
   }
 
   // recibe() payable {}

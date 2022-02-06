@@ -46,7 +46,7 @@
 						<button class="flex items-center px-4 h-12 bg-white rounded">
 							<div class="rounded-full w-[6px] h-[6px] bg-green-500 bg-green-500 mr-3"></div>
 							<div>{$wallet.slice(0, 6)}...{$wallet.slice(-6)}</div>
-							<span class="ml-1 text-gray-700 text-sm">▼</span>
+							<!-- <span class="ml-1 text-gray-700 text-sm">▼</span> -->
 						</button>
 					</div>
 				</div>

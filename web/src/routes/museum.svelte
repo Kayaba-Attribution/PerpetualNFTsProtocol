@@ -38,7 +38,7 @@ onMount(async () => {
 	<title>Museum</title>
 </svelte:head>
 
-<div class="content">
+<div class="container px-6 py-16 mx-auto text-center">
 
 	<h1>Art showing in museum</h1>
 	
@@ -49,11 +49,13 @@ onMount(async () => {
 	{#if nftsGetLoading}
 		Loading art... plase wait
 	{:else}
+
 		<div class="flex w-full">
 			<div class="flex w-full">
 				{#each museumNfts as nft}
-					<div class="w-1/3 p-10 text-center">
-						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" />
+					<div class="w-1/3 p-10 text-center ">
+						<h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft.tokenId}</h1>
+						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" alt="Perpetual #{nft.tokenId}" />
 						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId} lend by {nft.owner.slice(0,4)}...{nft.owner.slice(-4)}</h2>
 					</div>
 				{/each}

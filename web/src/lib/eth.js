@@ -32,7 +32,7 @@ const ADDRESS = {
   myToken: '0xd61fDdE15b245dDB947C400643149C49CDd5f3A2'
 }
 
-
+    
 
 export function loginMetamask() {
   window.ethereum.enable();
@@ -110,13 +110,10 @@ export async function init() {
     _promises.push(contracts.myToken.tokenOfOwnerByIndex(_wallet, String(i)));
   }
 
-  /*
   contracts.museum.depositedNFTs(_wallet).then(nfts => {
-    console.log(nfts)
     nftsInMuseum.set(nfts.map(nft => nft.toNumber()));
   });
-  */
-
+  
   let _nfts = await Promise.all(_promises);
   _nfts = _nfts.map(nft => nft.toNumber());
   nfts.set(_nfts);
@@ -135,10 +132,15 @@ export async function init() {
 
     if (from == _wallet && to == ADDRESS.museum) {
       const _nfts = await get(nftsInMuseum);
+      console.log('agregando nft', Number(value));
       _nfts.push(Number(value));
       nftsInMuseum.set([..._nfts]);
     }
 
+    if (from == ADDRESS.museum && to == _wallet) {
+      const _nfts = await get(nftsInMuseum);
+      nftsInMuseum.set([..._nfts.filter(id => id !== Number(value))]);
+    }
     // upgrade balance
     balanceETH.set(await _signer.provider.getBalance(_wallet));
   });

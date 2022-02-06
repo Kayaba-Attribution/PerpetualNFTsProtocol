@@ -1,5 +1,5 @@
 <script>
-import { formatEther } from '@ethersproject/units';
+import { parseEther, formatEther } from '@ethersproject/units';
 import { contracts, balanceETH, signer, init, wallet } from '$lib/eth.js';
 
 import { onMount } from 'svelte';
@@ -16,7 +16,7 @@ let repayAmount;
 $: if(pct) {
 	repayAmount = currentDebt.div(100).mul(Math.round(pct));
 } else {
-	repayAmount = 0;
+	repayAmount = parseEther("0");
 }
 
 
@@ -24,7 +24,7 @@ let repaying = false;
 async function repay() {
 	try {
 		repaying = true;
-		const tx = await contracts.museum.repay({value: repayAmount});
+		const tx = await contracts.museum.repay({value: repayAmount.add(parseEther("0.00001"))});
 		await tx.wait(1);
 		pct = 0;
 	} catch (err) {
@@ -32,6 +32,8 @@ async function repay() {
 	}
 	repaying = false;
 }
+
+$: newHealthFactor = Number(healthFactor.toFixed(2)) - (repayAmount ? Number(repayAmount.mul(10000).div(currentCollateral)) / 100 : 0);
 
 </script>
 <div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">
@@ -81,7 +83,7 @@ async function repay() {
     </button>
   </div>
   <!-- Calculate health factor on the fly yo se que es asqueroso jaja -->
-  <p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {(Number(healthFactor.toFixed(2)) - (repayAmount ? Number(repayAmount.mul(10000).div(currentCollateral)) / 100 : 0)).toFixed(3)}%</p>
+  <p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {newHealthFactor.toFixed(3)}%</p>
 </div>
 
 <style>

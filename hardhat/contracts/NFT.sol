@@ -23,18 +23,16 @@ contract MyToken is ERC721, ERC721Enumerable, Ownable {
         treasury = Treasury(_treasury);
     }
 
-    function nftValue() public pure returns(uint256) {
+    function nftValue(uint256 _id) public pure returns(uint256) {
+        // default value
         return 1 ether;
     }
 
     function mint() public payable {
-        require(msg.value == nftValue(), "Must send at least 1 ether");
         uint256 tokenId = _tokenIdCounter.current();
+        require(msg.value == nftValue(tokenId), "Must send at least 1 ether");
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
-        // transfer ether to the treasury
-        // (bool success, ) = payable(treasury).call{value: nftValue()}("");
-        // require(success, "mint fail");
         treasury.depositAAVE{value: msg.value}();
     }
 

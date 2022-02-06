@@ -12,7 +12,7 @@ let maxBorrow;
 
 
 let borrowAmount;
-$: if(pct) {
+$: if(pct && maxBorrow) {
 	borrowAmount = maxBorrow.div(100).mul(Math.round(pct));
 } else {
 	borrowAmount = 0;
@@ -23,7 +23,7 @@ let borrowing = false;
 async function borrow() {
 	try {
 		borrowing = true;
-		const tx = await contracts.museum.borrow(borrowAmount);
+		const tx = await contracts.museum.borrow(borrowAmount, false);
 		await tx.wait(1);
 		pct = 0;
 	} catch (err) {
