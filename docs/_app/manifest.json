@@ -1,0 +1,118 @@
+{
+  ".svelte-kit/runtime/client/start.js": {
+    "file": "start-0f49eb63.js",
+    "src": ".svelte-kit/runtime/client/start.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js"
+    ],
+    "dynamicImports": [
+      "src/routes/__layout.svelte",
+      ".svelte-kit/runtime/components/error.svelte",
+      "src/routes/index.svelte",
+      "src/routes/museum.svelte",
+      "src/routes/wallet/index.svelte",
+      "src/routes/wallet/[address].svelte",
+      "src/routes/loans.svelte",
+      "src/routes/token/[id].svelte"
+    ]
+  },
+  "src/routes/__layout.svelte": {
+    "file": "pages/__layout.svelte-c722674c.js",
+    "src": "src/routes/__layout.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js",
+      "_eth-b4b05d56.js"
+    ],
+    "css": [
+      "assets/pages/__layout.svelte-1ebfa544.css"
+    ]
+  },
+  ".svelte-kit/runtime/components/error.svelte": {
+    "file": "error.svelte-eaecaf58.js",
+    "src": ".svelte-kit/runtime/components/error.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "pages/index.svelte-33afd06b.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js",
+      "_eth-b4b05d56.js"
+    ],
+    "css": [
+      "assets/pages/wallet/index.svelte-ce863dad.css"
+    ]
+  },
+  "src/routes/museum.svelte": {
+    "file": "pages/museum.svelte-d682dc88.js",
+    "src": "src/routes/museum.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js",
+      "_eth-b4b05d56.js"
+    ]
+  },
+  "src/routes/wallet/index.svelte": {
+    "file": "pages/wallet/index.svelte-803d427e.js",
+    "src": "src/routes/wallet/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js",
+      "_eth-b4b05d56.js"
+    ],
+    "css": [
+      "assets/pages/wallet/index.svelte-ce863dad.css"
+    ]
+  },
+  "src/routes/wallet/[address].svelte": {
+    "file": "pages/wallet/_address_.svelte-87fd1483.js",
+    "src": "src/routes/wallet/[address].svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js"
+    ]
+  },
+  "src/routes/loans.svelte": {
+    "file": "pages/loans.svelte-089d7f75.js",
+    "src": "src/routes/loans.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js",
+      "_eth-b4b05d56.js"
+    ],
+    "css": [
+      "assets/pages/loans.svelte-1f9c4736.css"
+    ]
+  },
+  "src/routes/token/[id].svelte": {
+    "file": "pages/token/_id_.svelte-031197bc.js",
+    "src": "src/routes/token/[id].svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-e23481e1.js"
+    ]
+  },
+  "_vendor-e23481e1.js": {
+    "file": "chunks/vendor-e23481e1.js"
+  },
+  "_eth-b4b05d56.js": {
+    "file": "chunks/eth-b4b05d56.js",
+    "imports": [
+      "_vendor-e23481e1.js"
+    ]
+  }
+}

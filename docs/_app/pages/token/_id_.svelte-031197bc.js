@@ -1,0 +1,1 @@
+import{S as i,i as o,s as l,t as r,h as d,g as c,K as s,d as u}from"../../chunks/vendor-e23481e1.js";function f(a){let t;return{c(){t=r("esta es la vista del token [id]")},l(e){t=d(e,"esta es la vista del token [id]")},m(e,n){c(e,t,n)},p:s,i:s,o:s,d(e){e&&u(t)}}}class p extends i{constructor(t){super();o(this,t,null,f,l,{})}}export{p as default};
