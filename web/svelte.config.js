@@ -1,10 +1,15 @@
+// svelte.config.js
+import adapterStatic from '@sveltejs/adapter-static';
 import preprocess from "svelte-preprocess";
-import adapter from "@sveltejs/adapter-auto";
+import adapterAuto from "@sveltejs/adapter-auto";
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
+const dev = process.env.NODE_ENV === 'development';
+
+const GHPAGES = process.env.GHPAGES;
+
+const defaultConfig = {
   kit: {
-    adapter: adapter(),
+    adapter: adapterAuto(),
 
     // hydrate the <div id="svelte"> element in src/app.html
     target: "#svelte",
@@ -22,4 +27,25 @@ const config = {
   ],
 };
 
-export default config;
+const ghpagesConfig = {
+	kit: {
+		serviceWorker: {
+			register: false,
+		},
+		adapter: adapterStatic({
+			// default options are shown
+			pages: 'docs',
+			assets: 'docs',
+			fallback: null,
+		}),
+    paths: {
+      base: dev ? '' : '/Jugando-con-Eth',
+    },
+    // If you are not using a .nojekyll file, change your appDir to something not starting with an underscore.
+    // For example, instead of '_app', use 'app_', 'internal', etc.
+    // appDir: 'internal',
+    target: "#svelte",
+	},
+}
+console.log({GHPAGES})
+export default GHPAGES ? ghpagesConfig : defaultConfig;
