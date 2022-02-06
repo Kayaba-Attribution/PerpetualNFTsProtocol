@@ -140,7 +140,7 @@
 		</div>
 	</div>
 {:else}
-	<img class="cursor-pointer" src="src/lib/images/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
+	<img class="cursor-pointer" src="/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
 
 	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
 {/if}
