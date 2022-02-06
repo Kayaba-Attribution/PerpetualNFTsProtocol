@@ -6,7 +6,8 @@ import { Contract } from "@ethersproject/contracts";
 import abiMuseum from "./abi/Museum.json";
 import abiNFT from "./abi/contracts/NFT.sol/MyToken.json";
 
-import { derived, writable, get } from "svelte/store";
+import { writable } from "svelte/store";
+import loadHooks from "./ethHooks";
 
 // test net
 const CHAIN_ID = 80001;
@@ -30,7 +31,7 @@ export const balanceETH = writable(0);
 export const nfts = writable([]);
 export const nftsInMuseum = writable([]);
 
-const ADDRESS = {
+export const ADDRESS = {
   museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
   treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
   myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
@@ -44,13 +45,24 @@ const ADDRESS = {
 // }
 
     
+function reset() {
+  wallet.set('');
+  balance.set(0);
+  wrongNetwork.set(true);
+  tokenApproved.set(false);
+  signer.set();
+  balanceETH.set(0);
+
+  nfts.set([]);
+  nftsInMuseum.set([]);
+
+}
 
 export function loginMetamask() {
   window.ethereum.enable();
   init();
 }
 
-let INIT = false;
 
 export async function init() {
   if (!provider) {
@@ -58,6 +70,7 @@ export async function init() {
     provider.on("network", (newNetwork, oldNetwork) => {
       if (oldNetwork) {
         setTimeout(() => {
+          reset();
           init();
         }, 0);
       }
@@ -65,16 +78,11 @@ export async function init() {
 
     window.ethereum.on("accountsChanged", () => {
       setTimeout(() => {
+        reset();
         init();
       }, 0);
     });
   }
-
-  if (INIT) {
-    return;
-  }
-
-  INIT = true;
 
   const _networkDetails = await provider.getNetwork();
   // networkDetails.set(_networkDetails);
@@ -100,17 +108,11 @@ export async function init() {
   contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
   contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
 
+  
   const _tokenApproved = await contracts.myToken.isApprovedForAll(_wallet, ADDRESS.museum);
   tokenApproved.set(_tokenApproved);
 
-  contracts.myToken.on("ApprovalForAll", (owner, operator, approved) => {
-    if(owner === _wallet && operator === ADDRESS.museum) {
-      tokenApproved.set(approved);
-    }
-  });
-
   balanceETH.set(await _signer.provider.getBalance(_wallet));
-
 
   const _balance = await contracts.myToken.balanceOf(_wallet);
   balance.set(_balance);
@@ -129,34 +131,9 @@ export async function init() {
   _nfts = _nfts.map(nft => nft.toNumber());
   nfts.set(_nfts);
 
-  contracts.myToken.on("Transfer", async (from, to, value) => {
-    if (to === _wallet) {
-      const _nfts = await get(nfts);
-      _nfts.push(value);
-      nfts.set([..._nfts]);
-      balance.set(await contracts.myToken.balanceOf(_wallet));
-    } else if (from === _wallet) {
-      const _nfts = await get(nfts);
-      nfts.set([..._nfts.filter(tokenId => Number(tokenId) !== Number(value))]);
-      balance.set(await contracts.myToken.balanceOf(_wallet));
-    }
-
-    if (from == _wallet && to == ADDRESS.museum) {
-      const _nfts = await get(nftsInMuseum);
-      console.log('agregando nft', Number(value));
-      _nfts.push(Number(value));
-      nftsInMuseum.set([..._nfts]);
-    }
-
-    if (from == ADDRESS.museum && to == _wallet) {
-      const _nfts = await get(nftsInMuseum);
-      nftsInMuseum.set([..._nfts.filter(id => id !== Number(value))]);
-    }
-    // upgrade balance
-    balanceETH.set(await _signer.provider.getBalance(_wallet));
-  });
-
+  loadHooks();
 }
+
 
 export async function pickNetwork() {
   await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: CHAIN_HEX }] });
