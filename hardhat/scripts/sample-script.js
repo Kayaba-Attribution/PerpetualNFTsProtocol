@@ -44,7 +44,7 @@ async function main() {
   });
 
  // process.env.wallet
-  await deployer.sendTransaction({ to: "0x0600061016d090f004925000D80008e0fA1610c0", value: ethers.utils.parseEther("210.0") });
+  //await deployer.sendTransaction({ to: "0x0600061016d090f004925000D80008e0fA1610c0", value: ethers.utils.parseEther("210.0") });
 }
 
 // We recommend this pattern to be able to use async/await everywhere

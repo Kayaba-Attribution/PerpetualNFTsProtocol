@@ -8,7 +8,11 @@ import abiNFT from "./abi/contracts/NFT.sol/MyToken.json";
 
 import { derived, writable, get } from "svelte/store";
 
-const CHAIN_ID = 31337;
+// test net
+const CHAIN_ID = 80001;
+
+// HardHat
+//const CHAIN_ID = 31337;
 const CHAIN_HEX = '0x'+CHAIN_ID.toString(16);
 
 let provider;
@@ -27,10 +31,17 @@ export const nfts = writable([]);
 export const nftsInMuseum = writable([]);
 
 const ADDRESS = {
-  museum: '0x8816a73899B87cFb6f57AB564d7eb44B5B137E98',
-  treasury: '0x541529BC6480002727707c42051f536229cD7f65',
-  myToken: '0xd61fDdE15b245dDB947C400643149C49CDd5f3A2'
+  museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
+  treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
+  myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
 }
+
+// testnet
+// {
+//   museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
+//   treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
+//   myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
+// }
 
     
 

@@ -245,7 +245,7 @@
 				</div>
 
 				<div class="hidden lg:flex lg:w-1/2 lg:justify-center">
-					<img class="w-[28rem] h-[28rem] flex-shrink-0 object-cover xl:w-[34rem] xl:h-[34rem] rounded-full" src="src/lib/images/maticgif.gif" alt="">
+					<img class="w-[28rem] h-[28rem] flex-shrink-0 object-cover xl:w-[34rem] xl:h-[34rem] rounded-full" src="./maticgif.gif" alt="">
 				</div>
 			</div>
 		</div>
