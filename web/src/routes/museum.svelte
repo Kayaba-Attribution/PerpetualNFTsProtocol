@@ -10,12 +10,12 @@ let museumNfts = [];
 
 onMount(async () => {
 	await $metamaskReady;
-	const _balance = await contracts.myToken.balanceOf(contracts.museum.address);
+	const _balance = await contracts.perpetual.balanceOf(contracts.museum.address);
   
   const _promises = [];
   
   for (let i = 0; i < _balance; i++) {
-    _promises.push(contracts.myToken.tokenOfOwnerByIndex(contracts.museum.address, String(i)));
+    _promises.push(contracts.perpetual.tokenOfOwnerByIndex(contracts.museum.address, String(i)));
   }
 
   museumNfts = await Promise.all(_promises);
@@ -53,7 +53,7 @@ onMount(async () => {
 		<div class="flex w-full">
 			<div class="flex w-full">
 				{#each museumNfts as nft}
-					<div class="w-1/3 p-10 text-center" transition:fade>
+					<div class="w-1/3 p-10 text-center" transition:fade|local>
 						<h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft.tokenId}</h1>
 						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" alt="Perpetual #{nft.tokenId}" />
 						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId} lend by {nft.owner.slice(0,4)}...{nft.owner.slice(-4)}</h2>

@@ -14,11 +14,11 @@ async function transferHook(from, to, value) {
     const _nfts = await get(nfts);
     _nfts.push(value);
     nfts.set([..._nfts]);
-    balance.set(await contracts.myToken.balanceOf(_wallet));
+    balance.set(await contracts.perpetual.balanceOf(_wallet));
   } else if (from === _wallet) {
     const _nfts = await get(nfts);
     nfts.set([..._nfts.filter(tokenId => Number(tokenId) !== Number(value))]);
-    balance.set(await contracts.myToken.balanceOf(_wallet));
+    balance.set(await contracts.perpetual.balanceOf(_wallet));
   }
 
   if (from == _wallet && to == ADDRESS.museum) {
@@ -42,9 +42,9 @@ let hooksLoaded = false;
 export default function loadHooks() {
   if(hooksLoaded) return;
   hooksLoaded = true;
-  contracts.myToken.off("ApprovalForAll");
-  contracts.myToken.on("ApprovalForAll", approvalHook);
+  contracts.perpetual.off("ApprovalForAll");
+  contracts.perpetual.on("ApprovalForAll", approvalHook);
 
-  contracts.myToken.off("Transfer");
-  contracts.myToken.on("Transfer", transferHook);
+  contracts.perpetual.off("Transfer");
+  contracts.perpetual.on("Transfer", transferHook);
 }

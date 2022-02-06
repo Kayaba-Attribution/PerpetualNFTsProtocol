@@ -1,6 +1,6 @@
 <script>
 	import { nfts, wallet, tokenApproved, contracts, balance, loginMetamask } from '$lib/eth.js';
-	import { parseEther } from '@ethersproject/units';
+	import { fade } from 'svelte/transition';
 	
 	
 	let wait = {};
@@ -38,7 +38,7 @@
 
 	async function approve() {
 		try {
-			const tx = await contracts.myToken.setApprovalForAll(contracts.museum.address, true);
+			const tx = await contracts.perpetual.setApprovalForAll(contracts.museum.address, true);
 			
 			wait.approve = true;
 			wait = {...wait};
@@ -112,9 +112,9 @@
 	<div class="flex w-full">
 		<div class="flex w-full">
 			{#each $nfts as nft}
-				<div class="w-1/3 p-10 text-center ">
+				<div class="w-1/3 p-10 text-center" transition:fade|local>
             <h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft}</h1>
-						<img src="/tokens/{nft}.jpeg" class="rounded" />
+						<img src="/tokens/{nft}.jpeg" class="rounded" alt="Perpetual #{nft}" />
 					{#if !$tokenApproved}
 						<button class="border rounded hover:bg-gray-200 border-gray-400 cursor-pointer py-2 px-4 mt-2"
 						class:cursor-wait={wait.approve}

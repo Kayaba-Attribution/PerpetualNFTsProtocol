@@ -7,7 +7,7 @@
 	async function mint() {
 		try {
 			minteando = true;
-			const tx = await contracts.myToken.mint({value: parseEther('1')});
+			const tx = await contracts.perpetual.mint({value: parseEther('1')});
 			await tx.wait(1);
 		} catch (err) {}
 		minteando = false;

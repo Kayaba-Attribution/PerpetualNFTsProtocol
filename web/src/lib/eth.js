@@ -4,7 +4,7 @@ import { Contract } from "@ethersproject/contracts";
 // import abiMuseum from "./abi/contracts/Museum.sol/Museum.json";
 
 import abiMuseum from "./abi/Museum.json";
-import abiNFT from "./abi/contracts/NFT.sol/MyToken.json";
+import abiNFT from "./abi/Perpetual.json";
 
 import { writable } from "svelte/store";
 import loadHooks from "./ethHooks";
@@ -35,12 +35,12 @@ const NET_ADDRESS = {
   80001: {
     museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
     treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
-    myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
+    perpetual: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
   },
   31337: {  
     museum: '0xf219d840AA063d406Ecbcb5A6f0173CD8Dc9553f',
     treasury: '0x88876ccD4DC83c990aC59B3106E313562c8bc747',
-    myToken: '0x6f53118cdAC5726b1B4671c3F4fae024163eD042'
+    perpetual: '0x6f53118cdAC5726b1B4671c3F4fae024163eD042'
   }
 };
 
@@ -56,7 +56,7 @@ export const metamaskReady = writable(new Promise((resolve) => {
 // {
 //   museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
 //   treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
-//   myToken: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
+//   perpetual: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
 // }
 
     
@@ -123,21 +123,21 @@ export async function init() {
   signer.set(_signer);
 
   contracts.museum = new Contract(ADDRESS.museum, abiMuseum, _signer);
-  contracts.myToken = new Contract(ADDRESS.myToken, abiNFT, _signer);
+  contracts.perpetual = new Contract(ADDRESS.perpetual, abiNFT, _signer);
 
   
-  const _tokenApproved = await contracts.myToken.isApprovedForAll(_wallet, ADDRESS.museum);
+  const _tokenApproved = await contracts.perpetual.isApprovedForAll(_wallet, ADDRESS.museum);
   tokenApproved.set(_tokenApproved);
 
   balanceETH.set(await _signer.provider.getBalance(_wallet));
 
-  const _balance = await contracts.myToken.balanceOf(_wallet);
+  const _balance = await contracts.perpetual.balanceOf(_wallet);
   balance.set(_balance);
 
   const _promises = [];
   
   for (let i = 0; i < _balance; i++) {
-    _promises.push(contracts.myToken.tokenOfOwnerByIndex(_wallet, String(i)));
+    _promises.push(contracts.perpetual.tokenOfOwnerByIndex(_wallet, String(i)));
   }
 
   contracts.museum.depositedNFTs(_wallet).then(nfts => {
