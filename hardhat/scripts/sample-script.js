@@ -9,7 +9,7 @@
 const hre = require("hardhat");
 
 
-let treasury, myToken, museum;
+let treasury, Perpetual, museum;
 
 let deployer, bob, alice;
 
@@ -27,8 +27,8 @@ async function main() {
   treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
   await treasury.deployed();
 
-  const MyToken = await ethers.getContractFactory("MyToken");
-  myToken = await MyToken.deploy(treasury.address);
+  const Perpetual = await ethers.getContractFactory("Perpetual");
+  myToken = await Perpetual.deploy(treasury.address);
   await myToken.deployed();
 
   const Museum = await ethers.getContractFactory("Museum");

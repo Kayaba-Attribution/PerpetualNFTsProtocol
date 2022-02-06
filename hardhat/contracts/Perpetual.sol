@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./Treasury.sol";
 
-contract MyToken is ERC721, ERC721Enumerable, Ownable {
+contract Perpetual is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
     Treasury public treasury;
 
@@ -18,7 +18,7 @@ contract MyToken is ERC721, ERC721Enumerable, Ownable {
 
     // address public treasury;
 
-    constructor(address payable _treasury) ERC721("MyToken", "MTK") {
+    constructor(address payable _treasury) ERC721("Perpetual", "PERP") {
         //treasury = _treasury;
         treasury = Treasury(_treasury);
     }

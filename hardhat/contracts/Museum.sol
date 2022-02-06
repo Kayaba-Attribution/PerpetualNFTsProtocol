@@ -8,12 +8,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
-import "./NFT.sol";
+import "./Perpetual.sol";
 import "./Treasury.sol";
 
 
 contract Museum is Ownable, IERC721Receiver {
-  MyToken public nftToken;
+  Perpetual public nftToken;
   Treasury public treasury;
 
   // each nft is 1 ether so everytime a user deposits one nft supply adds 1
@@ -45,7 +45,7 @@ contract Museum is Ownable, IERC721Receiver {
   }
 
   constructor(address _nftToken, address payable _treasury) {
-    nftToken = MyToken(_nftToken);
+    nftToken = Perpetual(_nftToken);
     treasury = Treasury(_treasury);
   }
 
