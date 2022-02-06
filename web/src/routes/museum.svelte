@@ -2,7 +2,7 @@
 import { fade } from 'svelte/transition';
 import { onMount } from 'svelte';
 
-import { contracts, metamaskReady } from '$lib/eth.js';
+import { contracts, metamaskReady, wallet } from '$lib/eth.js';
 
 let nftsGetLoading = true;
 
@@ -56,7 +56,14 @@ onMount(async () => {
 					<div class="w-1/3 p-10 text-center" transition:fade|local>
 						<h1 class="pb-4 italic text-2xl font-semibold text-gray-700 capitalize">Perpetual #{nft.tokenId}</h1>
 						<img src="/tokens/{nft.tokenId}.jpeg" class="rounded" alt="Perpetual #{nft.tokenId}" />
-						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId} lend by {nft.owner.slice(0,4)}...{nft.owner.slice(-4)}</h2>
+						<h2 class="text-xl py-2 px-4 mt-2">#{nft.tokenId}
+							lend by 
+							{#if nft.owner == $wallet}
+								YOU
+							{:else}
+								{nft.owner.slice(0,4)}...{nft.owner.slice(-4)}
+							{/if}
+						</h2>
 					</div>
 				{/each}
 			</div>

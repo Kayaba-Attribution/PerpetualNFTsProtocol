@@ -22,6 +22,7 @@ export const contracts = {};
 
 export const wallet = writable('');
 export const balance = writable(0);
+export const museumBalance = writable(0);
 export const wrongNetwork = writable(true);
 export const tokenApproved = writable(false);
 export const signer = writable();
@@ -63,6 +64,7 @@ export const metamaskReady = writable(new Promise((resolve) => {
 function reset() {
   wallet.set('');
   balance.set(0);
+  museumBalance.set(0);
   wrongNetwork.set(true);
   tokenApproved.set(false);
   signer.set();
@@ -134,6 +136,8 @@ export async function init() {
   const _balance = await contracts.perpetual.balanceOf(_wallet);
   balance.set(_balance);
 
+  museumBalance.set(await contracts.museum.totalNFTS(_wallet));
+  
   const _promises = [];
   
   for (let i = 0; i < _balance; i++) {

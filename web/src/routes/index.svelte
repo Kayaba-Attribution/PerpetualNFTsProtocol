@@ -1,5 +1,5 @@
 <script>
-	import { wallet, wrongNetwork, pickNetwork, contracts, balance } from '$lib/eth.js';
+	import { wallet, wrongNetwork, pickNetwork, contracts, balance, museumBalance } from '$lib/eth.js';
 	import { parseEther } from '@ethersproject/units';
 
 
@@ -47,7 +47,13 @@
 					{/if}
 				</button>
 			</div>
-			<em> You have {$balance} paintings</em>  
+			{#if Number($balance) > 0 && Number($museumBalance) > 0}
+				<em> You have {$balance} Perpetuals in your wallet and {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+			{:else if Number($balance) > 0}
+				<em> You have {$balance} Perpetuals</em>  
+			{:else if Number($museumBalance) > 0}
+				<em> You have {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+			{/if}
 		</div>
 
 		<div class="sm:flex flex-wrap justify-center items-center text-center gap-8">

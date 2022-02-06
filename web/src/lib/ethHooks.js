@@ -1,4 +1,4 @@
-import { contracts, wallet, ADDRESS, nfts, tokenApproved, balance, balanceETH, signer, nftsInMuseum } from "./eth";
+import { contracts, wallet, ADDRESS, nfts, tokenApproved, balance, balanceETH, signer, nftsInMuseum, museumBalance } from "./eth";
 import { get } from "svelte/store";
 
 async function approvalHook (owner, operator, approved) {
@@ -14,11 +14,13 @@ async function transferHook(from, to, value) {
     const _nfts = await get(nfts);
     _nfts.push(value);
     nfts.set([..._nfts]);
-    balance.set(await contracts.perpetual.balanceOf(_wallet));
+    const _balance = await get(balance);
+    balance.set(Number(_balance) + 1);
   } else if (from === _wallet) {
     const _nfts = await get(nfts);
     nfts.set([..._nfts.filter(tokenId => Number(tokenId) !== Number(value))]);
-    balance.set(await contracts.perpetual.balanceOf(_wallet));
+    const _balance = await get(balance);
+    balance.set(Number(_balance) - 1);
   }
 
   if (from == _wallet && to == ADDRESS.museum) {
@@ -26,11 +28,14 @@ async function transferHook(from, to, value) {
     console.log('agregando nft', Number(value));
     _nfts.push(Number(value));
     nftsInMuseum.set([..._nfts]);
+    const _museumBalance = await get(museumBalance);
+    museumBalance.set(Number(_museumBalance) + 1);
   }
-
   if (from == ADDRESS.museum && to == _wallet) {
     const _nfts = await get(nftsInMuseum);
     nftsInMuseum.set([..._nfts.filter(id => id !== Number(value))]);
+    const _museumBalance = await get(museumBalance);
+    museumBalance.set(Number(_museumBalance) - 1);
   }
   const _signer = await get(signer);
   // upgrade balance

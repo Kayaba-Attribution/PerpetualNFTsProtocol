@@ -1,5 +1,5 @@
 <script>
-	import { nfts, wallet, tokenApproved, contracts, balance, loginMetamask } from '$lib/eth.js';
+	import { nfts, wallet, tokenApproved, contracts, balance, museumBalance, loginMetamask } from '$lib/eth.js';
 	import { fade } from 'svelte/transition';
 	
 	
@@ -62,7 +62,17 @@
 
     <div class="container px-6 py-1 mx-auto">
         <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Art</span></h1>
-        <h1 class="text-xl font-semibold text-gray-700 capitalize">Your own {$balance} NFTs</h1>
+				<h1 class="text-xl font-semibold text-gray-700 capitalize">
+					{#if Number($balance) > 0 && Number($museumBalance) > 0}
+						<em> You have {$balance} Perpetuals in your wallet and {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+					{:else if Number($balance) > 0}
+						<em> You have {$balance} Perpetuals</em>  
+					{:else if Number($museumBalance) > 0}
+						<em> You have {$museumBalance} Perpetuals in the <a href="/museum">Museum</a></em>  
+					{/if}
+				</h1>
+				<!-- <h1 class="text-xl font-semibold text-gray-700 capitalize">Your own {$balance} NFTs</h1> -->
+				
 
         
         <div class="grid grid-cols-3 gap-8 mt-8 xl:gap-16">
