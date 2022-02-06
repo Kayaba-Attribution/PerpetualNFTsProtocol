@@ -1,6 +1,6 @@
 <script>
 import { formatEther } from '@ethersproject/units';
-import { contracts, init, wallet } from '$lib/eth.js';
+import { contracts } from '$lib/eth.js';
 
 export let healthFactor;
 export let currentDebt;
@@ -18,23 +18,22 @@ $: if(pct && maxBorrow) {
 	borrowAmount = 0;
 }
 
-
 let borrowing = false;
 async function borrow() {
-	try {
-		borrowing = true;
+  try {
+    borrowing = true;
 		const tx = await contracts.museum.borrow(borrowAmount, false);
 		await tx.wait(1);
 		pct = 0;
 	} catch (err) {
-		console.log(err);
+    console.log(err);
 	}
 	borrowing = false;
 }
 
-
 $: maxBorrow = currentCollateral.div(2).sub(currentDebt);
 $: maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
+$: newHealthFactor = Number(healthFactor.toFixed(2)) + (borrowAmount ? Number(borrowAmount.mul(10000).div(currentCollateral)) / 100 : 0);
 
 </script>
 <div class="shadow-lg rounded-2xl p-4 mt-4 bg-white dark:bg-gray-800 text-center">
@@ -68,7 +67,7 @@ $: maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
   <input type="range" min="0" max="100" bind:value={pct} class="w-full" id="myinput">
   <div class="py-3 flex justify-center ..." >
 
-    <button on:click={borrow} class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
+    <button on:click={borrow} class="py-2 px-4 flex justify-center items-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
       class:disabled={borrowing}
       class:cursor-wait={borrowing}>
       {#if borrowing}
@@ -84,7 +83,7 @@ $: maxBorrow = maxBorrow.lt(0) ? 0 : maxBorrow;
     </button>
   </div>
   <!-- Calculate health factor on the fly yo se que es asqueroso jaja -->
-  <p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {(Number(healthFactor.toFixed(2)) + (borrowAmount ? Number(borrowAmount.mul(10000).div(currentCollateral)) / 100 : 0)).toFixed(3)}%</p>
+  <p class="text-gray-700 dark:text-gray-100 text-sm">Health Factor: {newHealthFactor.toFixed(3)}%</p>
 </div>
 
 <style>
