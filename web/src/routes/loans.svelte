@@ -37,10 +37,12 @@ onMount(async () => {
 
 	contracts.museum.on('Borrow', reloadDebt);
 	contracts.museum.on('Repay', reloadDebt);
+	contracts.museum.on('Withdraw', reloadDebt);
 
 	return () => {
 		contracts.museum.off('Borrow', reloadDebt);
 		contracts.museum.off('Repay', reloadDebt);
+		contracts.museum.off('Withdraw', reloadDebt);
 	};
 });
 
