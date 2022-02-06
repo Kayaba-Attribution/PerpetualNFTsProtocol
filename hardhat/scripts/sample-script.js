@@ -55,3 +55,7 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+
+// copy abi!
+//  cp -f hardhat/data/abi/contracts/Museum.sol/Museum.json web/src/lib/abi/Museum.json
