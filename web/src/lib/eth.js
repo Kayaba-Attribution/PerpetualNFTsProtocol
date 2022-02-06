@@ -27,7 +27,7 @@ export const wrongNetwork = writable(true);
 export const tokenApproved = writable(false);
 export const signer = writable();
 export const balanceETH = writable(0);
-
+export const totalSupply = writable(0);
 
 export const nfts = writable([]);
 export const nftsInMuseum = writable([]);
@@ -69,6 +69,7 @@ function reset() {
   tokenApproved.set(false);
   signer.set();
   balanceETH.set(0);
+  totalSupply.set(0);
 
   nfts.set([]);
   nftsInMuseum.set([]);
@@ -135,6 +136,8 @@ export async function init() {
 
   const _balance = await contracts.perpetual.balanceOf(_wallet);
   balance.set(_balance);
+
+  totalSupply.set(await contracts.perpetual.totalSupply());
 
   museumBalance.set(await contracts.museum.totalNFTS(_wallet));
   

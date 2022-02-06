@@ -1,4 +1,4 @@
-import { contracts, wallet, ADDRESS, nfts, tokenApproved, balance, balanceETH, signer, nftsInMuseum, museumBalance } from "./eth";
+import { contracts, wallet, ADDRESS, nfts, tokenApproved, balance, balanceETH, signer, nftsInMuseum, museumBalance, totalSupply } from "./eth";
 import { get } from "svelte/store";
 
 async function approvalHook (owner, operator, approved) {
@@ -37,9 +37,19 @@ async function transferHook(from, to, value) {
     const _museumBalance = await get(museumBalance);
     museumBalance.set(Number(_museumBalance) - 1);
   }
+
+  if (from == '0x0000000000000000000000000000000000000000') {
+    const _totalSupply = await get(totalSupply);
+    totalSupply.set(Number(_totalSupply) + 1);
+  } else if (to == '0x0000000000000000000000000000000000000000') {
+    const _totalSupply = await get(totalSupply);
+    totalSupply.set(Number(_totalSupply) - 1);
+  }
+
   const _signer = await get(signer);
   // upgrade balance
   balanceETH.set(await _signer.provider.getBalance(_wallet));
+
 }
 
 let hooksLoaded = false;

@@ -30,6 +30,7 @@ contract Perpetual is ERC721, ERC721Enumerable, Ownable {
 
     function mint() public payable {
         uint256 tokenId = _tokenIdCounter.current();
+        require(tokenId < 99, "No more than 100 Perpetuals can be minted");
         require(msg.value == nftValue(tokenId), "Must send at least 1 ether");
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
