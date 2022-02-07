@@ -32,9 +32,9 @@ export const nftsInMuseum = writable([]);
 
 const NET_ADDRESS = {
   80001: {
-    museum: '0x8104AECa7bE988437d033aF58a171A53119648Ce',
-    treasury: '0x11f7E9E4053BDDF9062fE4A227d91521551490bD',
-    perpetual: '0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278'
+    museum: '0xC90cb99EE0877c42a0B7FA9e437bffd4239969b1',
+    treasury: '0x0775655ab9E77DCDb3a4d08631Db192f626a19Fd',
+    perpetual: '0x1830e4E3F11910FcA52e9E1d891B61C87998D84c'
   },
   31337: {  
     museum: '0xf219d840AA063d406Ecbcb5A6f0173CD8Dc9553f',

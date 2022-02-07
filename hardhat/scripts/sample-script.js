@@ -26,14 +26,19 @@ async function main() {
   const Treasury = await ethers.getContractFactory("Treasury");
   treasury = await Treasury.deploy(WETHGateway, LendingPoolAddressesProviderAddress, aMATIC);
   await treasury.deployed();
+  console.log("Treasury:", treasury.address)
 
   const Perpetual = await ethers.getContractFactory("Perpetual");
   myToken = await Perpetual.deploy(treasury.address);
   await myToken.deployed();
+  console.log("perpetual:", myToken.address)
+
 
   const Museum = await ethers.getContractFactory("Museum");
   museum = await Museum.deploy(myToken.address, treasury.address);
   await museum.deployed();
+  console.log("museum:", museum.address)
+
 
   await treasury.transferOwnership(museum.address);
 

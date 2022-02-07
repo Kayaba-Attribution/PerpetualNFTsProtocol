@@ -1,4 +1,5 @@
 const { expect } = require("chai");
+const { hexStripZeros } = require("ethers/lib/utils");
 
 let deployer, bob, alice;
 let treasury, myToken, museum;
