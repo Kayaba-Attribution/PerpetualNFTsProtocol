@@ -1,6 +1,12 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.2;
 
+/**
+ * developed by Anon  https://github.com/eugenioclrc/
+ * developed by Kayaba-Attribution https://github.com/Kayaba-Attribution
+ *
+ */
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
