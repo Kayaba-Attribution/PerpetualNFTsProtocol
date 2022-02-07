@@ -39,7 +39,7 @@ const ghpagesConfig = {
 			fallback: null,
 		}),
     paths: {
-      base: dev ? '' : '/Jugando-con-Eth',
+      base: dev ? '' : '/PerpetualNFTsProtocol',
     },
     // If you are not using a .nojekyll file, change your appDir to something not starting with an underscore.
     // For example, instead of '_app', use 'app_', 'internal', etc.
