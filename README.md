@@ -12,14 +12,61 @@ NFTs are speculative and static in nature; once purchased, the value is set by p
 
 This is a one-of-a-kind NFT collection that uses its NFTs to build an entire DeFi protocol.
 
-After a mint, the entire purchase value goes to the Protocol Treasury, and it's available at all times only for the current owner of the NFT; No more waiting for someone to buy your NFT, and ending up never finding a buyer.
+After a mint, the entire purchase value goes to the Protocol Treasury and is directly sent to AAVE wMATIC lendingPool. Users can donate their NFTs to the Museum at 90% value at any time (if not used as collateral) this guarantees the value of the NFT to the user.
 
-The Treasury will use a series of DeFi protocols such as AAVE and Compound to stake the ETH and generate value. The rewards will be redistributed to users that agree to lock their NFTs in the Protocol Staking contract (The Museum).
+The Treasury acts as a proxy (no user info is stored in the contract) to interact with AAVE to stake the MATIC and generate value, Wrap/Unwrap MATIC, Check Native Balances, Check aWMATIC Balances and manages all the incoming/outcoming transactions, the functions are:
+```
+Contract: Treasury.sol
+===================================
+Sighash   |   Function Signature
+===================================
+d0e30db0  =>  deposit()
+2e1a7d4d  =>  withdraw(uint256)
+4012e02e  =>  Info()
+0357371d  =>  release(address,uint256)
+93d8aaa5  =>  withdrawAAVE(address,uint256)
+56c545b4  =>  withdrawAAVEwMATIC(address,uint256)
+f7867ca1  =>  depositAAVE()
+5ad1b636  =>  wrapMATIC()
+ac286bcf  =>  unwrapMATIC(uint256)
+ee4ae2c9  =>  sendMoney(address,uint256)
+99befcf2  =>  seeLendingPool()
+973b8362  =>  aMATICbalance(address)
+707752c0  =>  wMATICbalance(address)
+80c9849a  =>  maticBalance(address)
 
-The Protocol Treasury will also allow users to take loans using their NFTs as collateral. Mint, stake and earn passive income by using your NFT. On top of that, if you want to hold but use a percentage of your NFT value, take a loan!
+```
 
-A user can burn the NFT and get a 90% cashback.
+The Museum manages all the Lending and Accounting for the protocol by having mappings for specific uses, some of them are:
 
+* collateralAmount
+* collateralNFT
+* totalNFTS
+* borrowed
+* borrowedTime
+
+And the Museum functions:
+```
+Contract: Museum.sol
+===================================
+Sighash   |   Function Signature
+===================================
+0406bed6  =>  depositedNFTs(address)
+b6b55f25  =>  deposit(uint256)
+97a9d457  =>  maxBorrow(address)
+1ff517ff  =>  totalDebt(address)
+884719f2  =>  currentDebt(address)
+2f865568  =>  liquidate(address)
+8cd01307  =>  borrow(uint256,bool)
+402d8883  =>  repay()
+2e1a7d4d  =>  withdraw(uint256)
+37bdc99b  =>  release(uint256)
+6ad9f9df  =>  healthFactor(address)
+511477cb  =>  nftEnumRemove(address,uint256)
+150b7a02  =>  onERC721Received(address,address,uint256,bytes)
+```
+
+Mint, stake and earn passive income by using your NFT. On top of that, if you want to hold but use a percentage of your NFT value, take a loan!
 No more speculative and static NFTs! Our Protocol creates dynamic NFTs used to generate yield and take loans, all while retaining a price warranty at all times!
 
 ### Tests
