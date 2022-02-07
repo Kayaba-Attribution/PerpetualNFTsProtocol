@@ -4,11 +4,18 @@
 
 ### LIVE POLYGON MUMBAI TESTNET CONTRACTS:
 
-* museum: [0x8104AECa7bE988437d033aF58a171A53119648Ce](https://mumbai.polygonscan.com/address/0x8104AECa7bE988437d033aF58a171A53119648Ce)
-* treasury: [0x11f7E9E4053BDDF9062fE4A227d91521551490bD](https://mumbai.polygonscan.com/address/0x11f7E9E4053BDDF9062fE4A227d91521551490bD)
-* perpetual: [0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278](https://mumbai.polygonscan.com/address/0x5f67b1eCC8C855bFbF6Ea051853D67e266f5e278)
+* museum: [0xC90cb99EE0877c42a0B7FA9e437bffd4239969b1](https://mumbai.polygonscan.com/address/0xC90cb99EE0877c42a0B7FA9e437bffd4239969b1)
+* treasury: [0x0775655ab9E77DCDb3a4d08631Db192f626a19Fd](https://mumbai.polygonscan.com/address/0x0775655ab9E77DCDb3a4d08631Db192f626a19Fd)
+* perpetual: [0x1830e4E3F11910FcA52e9E1d891B61C87998D84c](https://mumbai.polygonscan.com/address/0x1830e4E3F11910FcA52e9E1d891B61C87998D84c)
 
 > [Live Page](https://perpetual-nft-s-protocol.vercel.app/)
+
++ [Mint Txn with AAVE Deposit](https://mumbai.polygonscan.com/tx/0x3808f20af66742e35f8eae937363b08698cba5678eb6ceb1a2720198f5fa3a20)
++ [Deposit Txn](https://mumbai.polygonscan.com/tx/0xdea67e42a511cc61bdbdc00c3cd0b05698c1b00ee5582164a2d1afc497de38bb)
++ [Borrow Txn](https://mumbai.polygonscan.com/tx/0x4787f206a2f06a6453d5ded12574a67a646d1d90eaadd226673d2f69d3e1451e)
++ [Repay Txn](https://mumbai.polygonscan.com/tx/0xa6e4eddda1059a3acc60117542dd3c68d2c08b57eab21ef6356e6969cf09f4c1)
++ [Withdraw Collateral](https://mumbai.polygonscan.com/tx/0x7d91b5b7e6f5e61a449af78e9d231563b854ab7cbae5deef13c13636aaba21f7)
++ ["Sell" to Museum](https://mumbai.polygonscan.com/tx/0x4a841a03e9a0e97c5c739077cb7676d6974097262a79d11355a8cfef820b11d1)
 
 ### Short Description:
 
