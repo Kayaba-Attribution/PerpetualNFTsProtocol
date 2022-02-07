@@ -197,4 +197,5 @@ describe("MAIN NFT Perpetual DeFi", function() {
 
 });
 
-//    npx hardhat node --fork https://speedy-nodes-nyc.moralis.io/aaf5f27c6c7a9ad182a69ccd/polygon/mumbai --fork-block-number 24401256  
+// Moralis Mumbai Tesnet Fork to run all the tests, that require live connection to AAVE contracts
+//    npx hardhat node --fork https://speedy-nodes-nyc.moralis.io/---/polygon/mumbai --fork-block-number 24401256  
