@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-abi-exporter");
 require("@nomiclabs/hardhat-etherscan");
+require('dotenv').config()
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -26,15 +27,10 @@ module.exports = {
       chainId: 31337,
     },
     mumbai: {
-      url: `https://speedy-nodes-nyc.moralis.io/aaf5f27c6c7a9ad182a69ccd/polygon/mumbai`,
-      accounts: ['66ccfc11bd552cf60fc9948330eace879fdd0825959f4197829338f97c07ffe1']
+      url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_API}/polygon/mumbai`,
+      accounts: [process.env.PRIV_KEY_DEPLOYER]
     },
-    // 0x00043a4682FB2dc300e96450a6eD328eb805F9d9 generated on vanity-eth
-    // etherscan: {
-    //   apiKey: {
-    //     mumbai: "WVE2MQXRUVR8YRKYUWXYSRR4UM987QMX9S"
-    //   }
-    // }
+
 
   },
   abiExporter: {
