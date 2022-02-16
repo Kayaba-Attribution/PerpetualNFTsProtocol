@@ -1,7 +1,13 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.2;
 
-import "hardhat/console.sol";
+/**
+ * developed by Anon  https://github.com/eugenioclrc/
+ * developed by Kayaba-Attribution https://github.com/Kayaba-Attribution
+ *
+ */
+
+// import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
