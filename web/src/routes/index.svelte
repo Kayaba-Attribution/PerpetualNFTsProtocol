@@ -178,7 +178,7 @@
 				<span class="inline-block w-1 h-1 ml-1 rounded-full bg-blue-500"></span>
 			</div>
 
-			<p>Check Out Github Repo <a href="">Here</a></p>
+			<p>Check Out Github Repo <a href="https://github.com/Kayaba-Attribution/PerpetualNFTsProtocol">Here</a></p>
 			<p>ETH Global Hackaton <a href="https://showcase.ethglobal.com/roadtoweb3/perpetual-nfts-protocol">Showcase</a></p>
 			
 			<div class="mt-2 xl:mt-2 lg:flex lg:items-center">
