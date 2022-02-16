@@ -1,5 +1,5 @@
 <script>
-	import { nfts, wallet, tokenApproved, contracts, balance, museumBalance, loginMetamask } from '$lib/eth.js';
+	import { nfts, wallet, tokenApproved, contracts, balance, museumBalance, pickNetwork, wrongNetwork } from '$lib/eth.js';
 	import { fade } from 'svelte/transition';
 	import { base } from '$app/paths';
 	
@@ -59,7 +59,7 @@
 
 <section>
 
-{#if $wallet}
+
 
     <div class="container px-6 py-1 mx-auto">
         <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl">Manage Your<br> Personal <span class="text-blue-500">Art</span></h1>
@@ -120,6 +120,11 @@
 
         </div>
     </div>
+	{#if $wrongNetwork}
+	<button on:click={() => pickNetwork()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+		Change Network To Polygon Mumbai
+	</button>
+	{:else if $wallet}
 	<div class="flex w-full">
 		<div class="flex w-full">
 			{#each $nfts as nft}
@@ -150,11 +155,12 @@
 			{/each}
 		</div>
 	</div>
-{:else}
-	<img class="cursor-pointer" src="{base}/connectWalletMeme.jpg" on:click={loginMetamask} alt="connect wallet meme" />
-
-	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
-{/if}
+	{:else}
+		<h3 class="text-2xl sm:text-xl font-semiboldtext-gray-100 py-4">
+			Please Connect Your Wallet To See Your NFTs
+		</h3>
+		<p>(Top Right Corner)</p>
+	{/if}
 
 
 

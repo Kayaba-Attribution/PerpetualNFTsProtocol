@@ -29,9 +29,10 @@ module.exports = {
     mumbai: {
       url: `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_API}/polygon/mumbai`,
       accounts: [process.env.PRIV_KEY_DEPLOYER]
-    },
-
-
+    }
+  },
+  etherscan: {
+    apiKey: ""
   },
   abiExporter: {
     path: "./data/abi",

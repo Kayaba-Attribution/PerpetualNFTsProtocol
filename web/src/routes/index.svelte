@@ -22,7 +22,7 @@
 
 <section>
 
-{#if $wallet}
+
 	<div class="container px-6 py-16 mx-auto text-center">
 		<div class="max-w-lg mx-auto">
 			<h1 class="text-4xl font-bold text-gray-800 md:text-4xl">Perpetual NFTs</h1>
@@ -33,6 +33,12 @@
 			</p>
 			{#if $totalSupply < 100}
 				<p class="text-sm">No more than 100 perpetuals can be minted... Hurry!</p>
+				{#if $wrongNetwork}
+				<button on:click={() => pickNetwork()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+					Change Network To Polygon Mumbai
+				</button>
+				{/if}
+				{#if $wallet}
 				<div class="py-3 flex justify-center" >
 					<button on:click={() => mint()} class="py-2 px-4 flex justify-center items-center  bg-gradient-to-r from-cyan-500 to-purple-500 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white rounded-lg "
 						class:disabled={minteando}
@@ -49,6 +55,12 @@
 						{/if}
 					</button>
 				</div>
+				{:else if !$wrongNetwork}
+				<h3 class="text-2xl sm:text-xl font-semiboldtext-gray-100 py-4">
+					Please Connect Your Wallet
+				</h3>
+				<p>(Top Right Corner)</p>
+				{/if}
 				{:else}
 					<h1>All perpetuals have been minted :(</h1>
 				{/if}
@@ -279,11 +291,7 @@
 		<button on:click={() => pickNetwork()}>CHANGE TO HARDHAT</button>
 	{/if}
 
-{:else}
-	<img src="{base}/connectWalletMeme.jpg" alt="connect wallet meme" />
 
-	<!-- <button on:click={loginMetamask}>boton de conectar</button> -->
-{/if}
 
 
 

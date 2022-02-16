@@ -3,7 +3,7 @@
 
 import { onMount } from 'svelte';
 
-import { contracts, metamaskReady, wallet } from '$lib/eth.js';
+import { contracts, metamaskReady, wallet, wrongNetwork, pickNetwork } from '$lib/eth.js';
 import InfoSquare from '$lib/loans/infoSquare.svelte';
 import TakeLoan from '$lib/loans/takeLoan.svelte';
 import RepayLoan from '$lib/loans/repayLoan.svelte';
@@ -70,8 +70,11 @@ let maticSpotPrice;
 		<h1 class="flex-grow text-left">Dashboard</h1>
 		<span class="text-md pt-5">Current Health Factor: {healthFactor}%</span>
 	</div>
-
-	{#if !loading}
+	{#if $wrongNetwork}
+	<button on:click={async() => await pickNetwork()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+		Change Network To Polygon Mumbai
+	</button>
+	{:else if !loading}
 		{#if healthFactor > 50}
 			<div class="bg-red-200 my-5 border-red-600 text-red-600 border-l-4 p-4" role="alert">
 				<p class="font-bold">
@@ -145,12 +148,21 @@ let maticSpotPrice;
 			<h1 class="my-8">Please deposit a Perpetual as collateral to take loans.</h1>
 		{/if}
 	{:else}
-	<h1 class="text-5xl text-gray-700 ">LOADING...</h1>
+	<h3 class="text-2xl sm:text-xl font-semiboldtext-gray-100 py-4 text-center">
+		Please Connect Your Wallet To See Your NFTs
+		<p>(Top Right Corner)</p>
+	</h3>
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
 		<path fill="none" stroke="#0a0a0a" stroke-width="8" stroke-dasharray="42.76482137044271 42.76482137044271" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z" stroke-linecap="round" style="transform:scale(0.8);transform-origin:50px 50px">
 		  <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="1.1363636363636365s" keyTimes="0;1" values="0;256.58892822265625"></animate>
 		</path>
 		</svg>
+	{#if $wallet}
+		<h3 class="text-2xl sm:text-xl font-semiboldtext-gray-100 py-4 text-center">
+			Please Refresh Your Browser
+			<p>(Covalent API error)</p>
+		</h3>
+	{/if}
 	{/if}
 </div>
 
